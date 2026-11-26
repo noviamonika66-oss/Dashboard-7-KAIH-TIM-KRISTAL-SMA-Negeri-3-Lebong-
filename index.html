@@ -1,0 +1,2418 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <title>Dashboard 7 KAIH | TIM KRISTAL SMA Negeri 3 Lebong</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js untuk visualisasi grafik interaktif yang bersih -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Definisikan fungsi fallback poster lebih awal agar selalu tersedia sebelum <img> dirender
+        function handlePosterFallback(imgEl) {
+            try {
+                const savedPoster = localStorage.getItem('kristal_official_poster_dataurl');
+                if (savedPoster && imgEl.src !== savedPoster) {
+                    imgEl.src = savedPoster;
+                    return;
+                }
+            } catch (e) {}
+
+            const altSrc = imgEl.getAttribute('data-alt-src');
+            if (altSrc && !imgEl.dataset.triedAlt) {
+                imgEl.dataset.triedAlt = 'true';
+                imgEl.src = altSrc;
+                return;
+            }
+
+            imgEl.classList.add('hidden');
+            const placeholderEl = document.getElementById('poster-placeholder-overlay');
+            if (placeholderEl) {
+                placeholderEl.classList.remove('hidden');
+            }
+        }
+    </script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        kristal: {
+                            navy: '#0B1F3A',
+                            royal: '#1E3A8A',
+                            blue: '#0284C7',
+                            teal: '#0D9488',
+                            sky: '#38BDF8',
+                            light: '#F8FAFC',
+                            amber: '#F59E0B',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+            background-color: #F8FAFC;
+            color: #0F172A;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Fluid Typography & Touch Targets for Laptop, Tablet & HP */
+        .fluid-hero-title {
+            font-size: clamp(2rem, 5vw, 3.75rem);
+            line-height: 1.12;
+        }
+        .fluid-section-title {
+            font-size: clamp(1.625rem, 3.5vw, 2.35rem);
+            line-height: 1.2;
+        }
+        .touch-target {
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        /* Hide scrollbars cleanly for horizontal mobile pill bars */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* KRISTAL Custom Gradient & Glass Effects */
+        .kristal-hero-bg {
+            background: radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.22) 0%, transparent 45%),
+                        radial-gradient(circle at 10% 85%, rgba(245, 158, 11, 0.16) 0%, transparent 40%),
+                        linear-gradient(135deg, #0B1F3A 0%, #1E3A8A 55%, #0284C7 100%);
+        }
+
+        .kristal-card-hover {
+            transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .kristal-card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 28px -10px rgba(11, 31, 58, 0.12), 0 8px 14px -6px rgba(2, 132, 199, 0.14);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94A3B8;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0284C7;
+        }
+
+        /* Extra bottom padding on mobile so sticky bottom bar never overlaps footer */
+        @media (max-width: 767px) {
+            body {
+                padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+            }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-sky-200 selection:text-slate-900">
+
+    <!-- ===================================================================== -->
+    <!-- 1. NAVIGASI STICKY RESPONSIF (LAPTOP, TABLET & HP)                    -->
+    <!-- ===================================================================== -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 lg:h-20 gap-2">
+                <!-- Identitas Brand TIM KRISTAL -->
+                <a href="#beranda" class="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-kristal-navy via-kristal-royal to-kristal-blue flex items-center justify-center text-white shadow-md shrink-0">
+                        <svg class="w-6 h-6 text-sky-300" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2L3 9l9 13 9-13-9-7zm0 2.6L17.8 9H6.2L12 4.6zM6.1 10.5h11.8L12 18.8l-5.9-8.3z"/>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-display font-extrabold text-sm sm:text-lg tracking-tight text-slate-900 truncate">TIM KRISTAL</span>
+                            <span class="hidden sm:inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 rounded-full border border-amber-300 shrink-0">SMAN 3 Lebong</span>
+                        </div>
+                        <p class="text-[11px] sm:text-xs font-medium text-slate-500 leading-tight truncate">Dashboard 7 KAIH Nasional</p>
+                    </div>
+                </a>
+
+                <!-- Menu Navigasi Desktop -->
+                <nav class="hidden xl:flex items-center gap-1 text-sm font-semibold text-slate-600">
+                    <a href="#beranda" class="px-3 py-2 rounded-lg hover:text-kristal-blue hover:bg-sky-50 transition">Beranda</a>
+                    <a href="#7kaih" class="px-3 py-2 rounded-lg hover:text-kristal-blue hover:bg-sky-50 transition">7 KAIH</a>
+                    <a href="#perkembangan" class="px-3 py-2 rounded-lg hover:text-kristal-blue hover:bg-sky-50 transition">Perkembangan</a>
+                    <a href="#rencana" class="px-3 py-2 rounded-lg hover:text-kristal-blue hover:bg-sky-50 transition">Rencana Perbaikan</a>
+                    <a href="#dokumentasi" class="px-3 py-2 rounded-lg hover:text-kristal-blue hover:bg-sky-50 transition">Dokumentasi</a>
+                    <a href="#dampak" class="px-3 py-2 rounded-lg hover:text-kristal-blue hover:bg-sky-50 transition">Dampak</a>
+                    <a href="#prestasi" class="px-3 py-2 rounded-lg hover:text-kristal-blue hover:bg-sky-50 transition">Prestasi</a>
+                </nav>
+
+                <!-- Tombol Akses Cepat Jurnal Spreadsheet & Hamburger Mobile -->
+                <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                    <button onclick="openSpreadsheetModal()" class="touch-target inline-flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-sm hover:shadow transition cursor-pointer">
+                        <i data-lucide="file-spreadsheet" class="w-4 h-4 shrink-0"></i>
+                        <span class="hidden sm:inline">Jurnal Harian (Spreadsheet)</span>
+                        <span class="sm:hidden">Jurnal</span>
+                    </button>
+
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="touch-target xl:hidden inline-flex items-center justify-center p-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 cursor-pointer" aria-label="Buka Menu">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile & Tablet Dropdown Navigation -->
+        <div id="mobile-menu" class="hidden xl:hidden bg-white border-t border-slate-100 px-4 pt-2 pb-4 space-y-1 shadow-xl">
+            <a href="#beranda" onclick="toggleMobileMenu()" class="touch-target flex items-center px-3.5 py-2.5 rounded-xl font-semibold text-slate-700 hover:bg-sky-50 hover:text-kristal-blue">Beranda & Poster KRISTAL</a>
+            <a href="#7kaih" onclick="toggleMobileMenu()" class="touch-target flex items-center px-3.5 py-2.5 rounded-xl font-semibold text-slate-700 hover:bg-sky-50 hover:text-kristal-blue">7 Kebiasaan Anak Indonesia Hebat</a>
+            <a href="#perkembangan" onclick="toggleMobileMenu()" class="touch-target flex items-center px-3.5 py-2.5 rounded-xl font-semibold text-slate-700 hover:bg-sky-50 hover:text-kristal-blue">Perkembangan & Checklist Hari Ini</a>
+            <a href="#rencana" onclick="toggleMobileMenu()" class="touch-target flex items-center px-3.5 py-2.5 rounded-xl font-semibold text-slate-700 hover:bg-sky-50 hover:text-kristal-blue">Canvas Rencana Perbaikan</a>
+            <a href="#dokumentasi" onclick="toggleMobileMenu()" class="touch-target flex items-center px-3.5 py-2.5 rounded-xl font-semibold text-slate-700 hover:bg-sky-50 hover:text-kristal-blue">Dokumentasi & Unggah Bukti</a>
+            <a href="#dampak" onclick="toggleMobileMenu()" class="touch-target flex items-center px-3.5 py-2.5 rounded-xl font-semibold text-slate-700 hover:bg-sky-50 hover:text-kristal-blue">Keunggulan & Nilai Karakter</a>
+            <a href="#prestasi" onclick="toggleMobileMenu()" class="touch-target flex items-center px-3.5 py-2.5 rounded-xl font-semibold text-slate-700 hover:bg-sky-50 hover:text-kristal-blue">Prestasi & Statistik Dampak</a>
+        </div>
+    </header>
+
+    <!-- ===================================================================== -->
+    <!-- 2. HALAMAN UTAMA (POSTER RESMI TIM KRISTAL STATIS + HERO SECTION)     -->
+    <!-- ===================================================================== -->
+    <section id="beranda" class="kristal-hero-bg text-white pt-6 pb-14 sm:pt-10 sm:pb-20 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+            <!-- POSTER RESMI TIM KRISTAL (100% STATIS UTUH TANPA ANIMASI MENGAMBANG) -->
+            <div class="mb-10 sm:mb-12 bg-white/10 p-2.5 sm:p-3.5 rounded-3xl border border-white/25 backdrop-blur-md shadow-2xl">
+                <div id="poster-dropzone"
+                     ondragover="handlePosterDragOver(event)"
+                     ondragleave="handlePosterDragLeave(event)"
+                     ondrop="handlePosterDrop(event)"
+                     class="relative rounded-2xl overflow-hidden border-2 border-white shadow-xl bg-[#0B1F3A]">
+
+                    <!-- Gambar Poster Resmi TIM KRISTAL (Mencoba nama file yang diunggah, fallback ke identitas KRISTAL) -->
+                    <img id="kristal-poster-img"
+                         src="Screenshot 2026-11-26 111603_2.jpg"
+                         data-alt-src="WhatsApp Image 2026-11-21 at 12.40.06.jpg"
+                         onerror="handlePosterFallback(this)"
+                         alt="Poster Resmi TIM KRISTAL - Karya Remaja InSpiratif Teknologi Andalan Lebong - SMA Negeri 3 Lebong"
+                         class="w-full h-auto max-h-[500px] object-contain mx-auto block bg-[#1D8FE1]">
+
+                    <!-- Fallback Visual Tajam Beridentitas KRISTAL SMA Negeri 3 Lebong -->
+                    <div id="poster-placeholder-overlay" class="hidden bg-gradient-to-r from-[#0B1F3A] via-[#1E3A8A] to-[#0284C7] px-6 py-10 sm:py-12 text-center relative overflow-hidden">
+                        <div class="max-w-4xl mx-auto space-y-4">
+                            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider shadow">
+                                <svg class="w-4 h-4 text-kristal-royal" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2L3 9l9 13 9-13-9-7z"/>
+                                </svg>
+                                IDENTITAS RESMI TIM LOMBA NASIONAL
+                            </div>
+                            <div class="space-y-1">
+                                <h2 class="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-white drop-shadow">
+                                    KRISTAL
+                                </h2>
+                                <p class="inline-block px-4 py-1 rounded-xl bg-amber-400 text-slate-950 font-display font-extrabold text-sm sm:text-lg shadow">
+                                    (Karya Remaja InSpiratif Teknologi Andalan Lebong)
+                                </p>
+                                <p class="font-display font-bold text-lg sm:text-xl text-sky-200 pt-1">
+                                    SMA Negeri 3 Lebong
+                                </p>
+                            </div>
+                            <p class="text-sky-100 text-xs sm:text-sm max-w-2xl mx-auto">
+                                Klik tombol di bawah atau seret (<em>drag & drop</em>) file poster resmi TIM KRISTAL (<code class="bg-white/15 px-2 py-0.5 rounded text-amber-200">Screenshot 2026-11-26 111603_2.jpg</code>) untuk menampilkan gambar poster asli secara permanen di browser Anda.
+                            </p>
+                            <div class="pt-1">
+                                <label class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-sm cursor-pointer shadow-lg">
+                                    <i data-lucide="upload" class="w-4 h-4"></i>
+                                    <span>Pasang File Poster Asli Sekarang</span>
+                                    <input type="file" accept="image/*" onchange="handlePosterUpload(event)" class="hidden">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bar Kontrol Bawah Poster -->
+                <div class="flex flex-wrap items-center justify-between gap-2 pt-2.5 px-2 text-xs text-sky-100">
+                    <span class="flex items-center gap-1.5 font-semibold">
+                        <i data-lucide="award" class="w-4 h-4 text-amber-300"></i>
+                        Poster Resmi TIM KRISTAL (Karya Remaja InSpiratif Teknologi Andalan Lebong) — SMA Negeri 3 Lebong
+                    </span>
+                    <div class="flex items-center gap-2">
+                        <button id="reset-poster-btn" onclick="resetPosterStorage()" class="hidden px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-sky-200 font-semibold cursor-pointer">
+                            Hapus Simpanan Poster
+                        </button>
+                        <label class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold cursor-pointer shadow-sm">
+                            <i data-lucide="image-plus" class="w-3.5 h-3.5"></i>
+                            <span>Pasang / Ganti File Poster Asli</span>
+                            <input type="file" accept="image/*" onchange="handlePosterUpload(event)" class="hidden">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JUDUL UTAMA DASHBOARD 7 KAIH & KARTU "MENGAPA 7 KAIH PENTING?" -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Kolom Kiri (7 Kolom) -->
+                <div class="lg:col-span-7 space-y-5 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm text-sky-200 text-xs sm:text-sm font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                        Dashboard Perlombaan Sekolah Tingkat Nasional • SMA Negeri 3 Lebong
+                    </div>
+
+                    <div class="space-y-2.5">
+                        <h1 class="font-display font-extrabold fluid-hero-title tracking-tight">
+                            DASHBOARD <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-white to-amber-300">7 KAIH</span>
+                        </h1>
+                        <p class="font-display font-bold text-base sm:text-2xl text-amber-300 leading-snug">
+                            “Membangun Generasi Indonesia Hebat melalui Kebiasaan Baik”
+                        </p>
+                    </div>
+
+                    <p class="text-slate-100 text-sm sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                        “7 KAIH adalah kebiasaan positif yang diterapkan dalam kehidupan sehari-hari untuk membentuk karakter, kesehatan, kedisiplinan, dan semangat belajar generasi muda Indonesia.”
+                    </p>
+
+                    <!-- Tombol CTA Utama -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 pt-2">
+                        <a href="#7kaih" class="touch-target w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-sm sm:text-base shadow-lg shadow-amber-500/25 transition">
+                            <span>Mulai Jelajahi 7 KAIH</span>
+                            <i data-lucide="arrow-down-right" class="w-5 h-5"></i>
+                        </a>
+                        <button onclick="openSpreadsheetModal()" class="touch-target w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm sm:text-base shadow-lg transition cursor-pointer">
+                            <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                            <span>Buka Jurnal Harian (Spreadsheet)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan (5 Kolom): Kartu Mengapa 7 KAIH Penting? -->
+                <div class="lg:col-span-5">
+                    <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-6 sm:p-7 shadow-xl space-y-5">
+                        <div class="space-y-2">
+                            <div class="inline-flex items-center gap-2 text-amber-300 font-bold text-xs uppercase tracking-wider">
+                                <i data-lucide="compass" class="w-4 h-4"></i>
+                                Landasan Program
+                            </div>
+                            <h2 class="font-display font-bold text-2xl text-white">Mengapa 7 KAIH Penting?</h2>
+                            <p class="text-sky-100 text-sm leading-relaxed">
+                                Kebiasaan baik yang dilakukan secara <strong class="text-white">konsisten setiap hari</strong> membantu membentuk karakter tangguh, kedisiplinan, kesehatan fisik-mental, dan kualitas generasi muda Indonesia yang siap berprestasi.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-slate-900/50 border border-white/15 rounded-2xl p-3.5 flex items-center gap-3">
+                                <i data-lucide="shield-check" class="w-6 h-6 text-sky-300 shrink-0"></i>
+                                <div>
+                                    <p class="font-bold text-xs sm:text-sm text-white">Karakter Kuat</p>
+                                    <p class="text-[11px] text-sky-200">Berakhlak mulia</p>
+                                </div>
+                            </div>
+                            <div class="bg-slate-900/50 border border-white/15 rounded-2xl p-3.5 flex items-center gap-3">
+                                <i data-lucide="clock" class="w-6 h-6 text-amber-300 shrink-0"></i>
+                                <div>
+                                    <p class="font-bold text-xs sm:text-sm text-white">Disiplin Waktu</p>
+                                    <p class="text-[11px] text-sky-200">Teratur & sigap</p>
+                                </div>
+                            </div>
+                            <div class="bg-slate-900/50 border border-white/15 rounded-2xl p-3.5 flex items-center gap-3">
+                                <i data-lucide="heart-pulse" class="w-6 h-6 text-rose-300 shrink-0"></i>
+                                <div>
+                                    <p class="font-bold text-xs sm:text-sm text-white">Fisik Bugar</p>
+                                    <p class="text-[11px] text-sky-200">Sehat & bergizi</p>
+                                </div>
+                            </div>
+                            <div class="bg-slate-900/50 border border-white/15 rounded-2xl p-3.5 flex items-center gap-3">
+                                <i data-lucide="brain" class="w-6 h-6 text-emerald-300 shrink-0"></i>
+                                <div>
+                                    <p class="font-bold text-xs sm:text-sm text-white">Siap Belajar</p>
+                                    <p class="text-[11px] text-sky-200">Kritis & kreatif</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2 pt-3 border-t border-white/15 text-center">
+                            <div>
+                                <p class="font-display font-extrabold text-xl sm:text-2xl text-white">785</p>
+                                <p class="text-[11px] text-sky-200">Siswa Aktif</p>
+                            </div>
+                            <div>
+                                <p class="font-display font-extrabold text-xl sm:text-2xl text-amber-300">3.140</p>
+                                <p class="text-[11px] text-sky-200">Data Tervalidasi</p>
+                            </div>
+                            <div>
+                                <p class="font-display font-extrabold text-xl sm:text-2xl text-emerald-300">+13,2%</p>
+                                <p class="text-[11px] text-sky-200">Tren Naik P1–P4</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 3. TUJUH KEBIASAAN ANAK INDONESIA HEBAT (7 KARTU BESAR INTERAKTIF)    -->
+    <!-- ===================================================================== -->
+    <section id="7kaih" class="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-3">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-sky-100 text-kristal-blue font-bold text-xs uppercase tracking-wider">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Pilar Pembentukan Karakter
+            </span>
+            <h2 class="font-display font-extrabold fluid-section-title text-slate-900">
+                7 Kebiasaan Anak Indonesia Hebat
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-lg">
+                Klik tombol <strong>Detail & Indikator</strong> pada setiap kartu untuk melihat data empiris lengkap penerapan di SMA Negeri 3 Lebong.
+            </p>
+        </div>
+
+        <!-- Grid 7 Kartu Besar -->
+        <div id="kaih-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+            <!-- Kartu dirender dinamis lewat JavaScript -->
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 4. PERKEMBANGAN 7 KAIH & KEBIASAAN HARI INI (CHECKLIST + SPREADSHEET) -->
+    <!-- ===================================================================== -->
+    <section id="perkembangan" class="py-14 sm:py-20 bg-white border-y border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-5 mb-8 sm:mb-10">
+                <div class="space-y-2 max-w-2xl">
+                    <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-teal-100 text-kristal-teal font-bold text-xs uppercase tracking-wider">
+                        <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i> Monitoring Berbasis Data Empiris
+                    </span>
+                    <h2 class="font-display font-extrabold fluid-section-title text-slate-900">
+                        Perkembangan 7 KAIH & Kebiasaan Hari Ini
+                    </h2>
+                    <p class="text-slate-600 text-sm sm:text-base">
+                        Berdasarkan dataset <strong>3.140 respons dari 785 siswa unik</strong> SMA Negeri 3 Lebong (Gelombang P1–P4, skala 1,00–4,00).
+                    </p>
+                </div>
+
+                <!-- Filter Gelombang P1-P4 (Scrollable Horizontal di HP) -->
+                <div class="w-full lg:w-auto overflow-x-auto no-scrollbar pb-1">
+                    <div id="wave-filter-group" class="inline-flex rounded-xl bg-slate-100 p-1 border border-slate-200 whitespace-nowrap">
+                        <button onclick="setWaveFilter('all')" data-wave="all" class="wave-btn touch-target px-3.5 py-2 rounded-lg text-xs font-bold bg-kristal-royal text-white shadow-sm cursor-pointer">Rata-rata P1–P4</button>
+                        <button onclick="setWaveFilter('p1')" data-wave="p1" class="wave-btn touch-target px-3.5 py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 cursor-pointer">P1</button>
+                        <button onclick="setWaveFilter('p2')" data-wave="p2" class="wave-btn touch-target px-3.5 py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 cursor-pointer">P2</button>
+                        <button onclick="setWaveFilter('p3')" data-wave="p3" class="wave-btn touch-target px-3.5 py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 cursor-pointer">P3</button>
+                        <button onclick="setWaveFilter('p4')" data-wave="p4" class="wave-btn touch-target px-3.5 py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 cursor-pointer">P4 (Terkini)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 Kartu Pencapaian Kunci (KPI Scorecards) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+                <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200/80 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase text-slate-500">Total Sampel Tervalidasi</p>
+                        <p class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-1">3.140</p>
+                        <p class="text-xs font-semibold text-kristal-blue mt-0.5">Dari 785 siswa unik</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-sky-100 text-kristal-blue flex items-center justify-center">
+                        <i data-lucide="database" class="w-6 h-6"></i>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200/80 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase text-slate-500">Tren Kenaikan P1 → P4</p>
+                        <p class="font-display font-extrabold text-2xl sm:text-3xl text-emerald-600 mt-1">+13,2%</p>
+                        <p class="text-xs font-semibold text-slate-600 mt-0.5">Skor 2,82 naik ke 3,19</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                        <i data-lucide="trending-up" class="w-6 h-6"></i>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200/80 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase text-slate-500">Efek Domino Tidur &lt;22.30</p>
+                        <p class="font-display font-extrabold text-2xl sm:text-3xl text-kristal-royal mt-1">75,7%</p>
+                        <p class="text-xs font-semibold text-slate-600 mt-0.5">Sangat segar (vs 40,8%)</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-kristal-royal flex items-center justify-center">
+                        <i data-lucide="moon-star" class="w-6 h-6"></i>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200/80 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase text-slate-500">Kohort Lengkap P1–P4</p>
+                        <p class="font-display font-extrabold text-2xl sm:text-3xl text-amber-600 mt-1">72,3%</p>
+                        <p class="text-xs font-semibold text-slate-600 mt-0.5">Dari 433 siswa meningkat</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center">
+                        <i data-lucide="award" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid Utama: Kolom Kiri (Progress Bar & Diagram Batang) | Kolom Kanan (Checklist Kebiasaan Hari Ini + Spreadsheet) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+                <!-- KOLOM KIRI (7 KOLOM): PROGRESS BAR & GRAFIK BATANG -->
+                <div class="lg:col-span-7 space-y-6">
+                    <!-- Kartu Progress Bar 7 KAIH -->
+                    <div class="bg-slate-50 rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-5">
+                            <div>
+                                <h3 id="progress-panel-title" class="font-display font-bold text-xl text-slate-900">Capaian Tiap Kebiasaan (Rata-rata P1–P4)</h3>
+                                <p class="text-xs text-slate-500">Persentase ketuntasan & skor skala 1,00–4,00 berdasarkan hasil survei sekolah</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-kristal-navy text-white text-xs font-bold">785 Siswa</span>
+                        </div>
+
+                        <div id="progress-bars-list" class="space-y-4">
+                            <!-- Progress bar dirender lewat JS -->
+                        </div>
+                    </div>
+
+                    <!-- Kartu Diagram Batang P1 vs P4 -->
+                    <div class="bg-slate-50 rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                            <div>
+                                <h3 class="font-display font-bold text-xl text-slate-900">Diagram Batang Tren Gelombang P1 vs P4</h3>
+                                <p class="text-xs text-slate-500">Seluruh 7 kebiasaan mencatat peningkatan konsisten dari awal ke akhir pengamatan</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">Naik +13,2%</span>
+                        </div>
+                        <div class="relative h-64 sm:h-72 w-full">
+                            <canvas id="kaihTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KOLOM KANAN (5 KOLOM): CHECKLIST KEBIASAAN HARI INI + LINK SPREADSHEET -->
+                <div class="lg:col-span-5">
+                    <div class="bg-gradient-to-b from-kristal-navy to-kristal-royal text-white rounded-3xl p-6 sm:p-7 shadow-xl border border-sky-400/20">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-300/30 text-amber-300 text-xs font-bold">
+                                <i data-lucide="calendar-check" class="w-3.5 h-3.5"></i> Jurnal Mandiri Siswa
+                            </span>
+                            <span id="daily-score-badge" class="font-display font-extrabold text-lg text-sky-300">0/7 Selesai</span>
+                        </div>
+
+                        <h3 class="font-display font-extrabold text-2xl mb-1">Kebiasaan Hari Ini</h3>
+                        <p class="text-sky-200 text-xs sm:text-sm mb-5">
+                            Centang kebiasaan yang sudah kamu lakukan hari ini, lalu kirim atau buka Google Spreadsheet Jurnal Harian.
+                        </p>
+
+                        <!-- Daftar 7 Checklist Interaktif -->
+                        <div id="daily-checklist-container" class="space-y-2.5 mb-6">
+                            <!-- Item checklist dirender lewat JS -->
+                        </div>
+
+                        <!-- Progress Ringkas Hari Ini -->
+                        <div class="bg-white/10 rounded-2xl p-4 mb-5 border border-white/15">
+                            <div class="flex justify-between text-xs font-bold mb-1.5">
+                                <span class="text-sky-200">Progres Kebiasaan Hari Ini</span>
+                                <span id="daily-percent-text" class="text-amber-300">0%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-950/60 rounded-full overflow-hidden">
+                                <div id="daily-progress-bar" class="h-full bg-gradient-to-r from-amber-400 to-emerald-400 rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Langsung ke Spreadsheet Jurnal Harian & Ekspor CSV -->
+                        <div class="space-y-2.5">
+                            <a id="direct-spreadsheet-anchor" href="https://docs.google.com/spreadsheets/create" target="_blank" rel="noopener noreferrer" class="touch-target w-full py-3.5 px-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-2 transition">
+                                <i data-lucide="file-spreadsheet" class="w-5 h-5 shrink-0"></i>
+                                <span>Isi & Sinkronkan ke Google Spreadsheet</span>
+                                <i data-lucide="external-link" class="w-4 h-4 shrink-0"></i>
+                            </a>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="exportDailyChecklistCSV()" class="touch-target py-2.5 px-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                                    <span>Ekspor Baris CSV</span>
+                                </button>
+                                <button onclick="openSpreadsheetModal()" class="touch-target py-2.5 px-3 rounded-xl bg-white/15 hover:bg-white/25 text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer">
+                                    <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+                                    <span>Atur Link Sheet</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 5. CANVAS PERENCANAAN PERBAIKAN INTERAKTIF (7 KARTU BISA DIKLIK)      -->
+    <!-- ===================================================================== -->
+    <section id="rencana" class="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-3">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-xs uppercase tracking-wider">
+                <i data-lucide="rocket" class="w-3.5 h-3.5"></i> Strategi Akselerasi Grafik Menuju 100%
+            </span>
+            <h2 class="font-display font-extrabold fluid-section-title text-slate-900">
+                Canvas Rencana Perbaikan & Akselerasi 7 KAIH
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-lg">
+                Rencana perubahan terukur untuk mengangkat seluruh grafik kebiasaan menuju pelaksanaan sempurna. <strong>Klik kartu mana saja</strong> untuk membuka detail strategi aksi & dampaknya.
+            </p>
+        </div>
+
+        <!-- Grid 7 Kartu Rencana Perbaikan (Termasuk Gemar Belajar Holistik Non-Literasi & Literasi) -->
+        <div id="action-plan-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            <!-- Kartu rencana perbaikan dirender lewat JS -->
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 6. KEUNGGULAN PROGRAM: "DARI KEBIAASAAN KECIL, TUMBUH GENERASI HEBAT" -->
+    <!-- ===================================================================== -->
+    <section id="dampak" class="py-14 sm:py-20 bg-gradient-to-br from-sky-50 via-white to-amber-50/60 border-y border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-3">
+                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-kristal-royal text-white font-bold text-xs uppercase tracking-wider">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-300"></i> Keunggulan & Nilai Karakter
+                </span>
+                <h2 class="font-display font-extrabold fluid-section-title text-slate-900">
+                    “Dari Kebiasaan Kecil, Tumbuh Generasi Hebat”
+                </h2>
+                <p class="text-slate-600 text-sm sm:text-lg">
+                    Tujuh dampak karakter utama yang terbentuk secara konsisten pada diri siswa SMA Negeri 3 Lebong.
+                </p>
+            </div>
+
+            <!-- 7 Kartu Ikon Nilai Karakter Utama -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4">
+                <div class="bg-white rounded-3xl p-5 border border-slate-200/90 text-center shadow-sm kristal-card-hover">
+                    <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center">
+                        <i data-lucide="alarm-clock-check" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="font-display font-extrabold text-base text-slate-900">Disiplin</h3>
+                    <p class="text-xs text-slate-500 mt-1">Tepat waktu & taat aturan</p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-5 border border-slate-200/90 text-center shadow-sm kristal-card-hover">
+                    <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center">
+                        <i data-lucide="heart-pulse" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="font-display font-extrabold text-base text-slate-900">Sehat</h3>
+                    <p class="text-xs text-slate-500 mt-1">Fisik bugar & gizi seimbang</p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-5 border border-slate-200/90 text-center shadow-sm kristal-card-hover">
+                    <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-sky-100 text-kristal-blue flex items-center justify-center">
+                        <i data-lucide="user-check" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="font-display font-extrabold text-base text-slate-900">Mandiri</h3>
+                    <p class="text-xs text-slate-500 mt-1">Inisiatif tanpa disuruh</p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-5 border border-slate-200/90 text-center shadow-sm kristal-card-hover">
+                    <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-teal-100 text-kristal-teal flex items-center justify-center">
+                        <i data-lucide="hand-heart" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="font-display font-extrabold text-base text-slate-900">Peduli</h3>
+                    <p class="text-xs text-slate-500 mt-1">Gotong royong & empati</p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-5 border border-slate-200/90 text-center shadow-sm kristal-card-hover">
+                    <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                        <i data-lucide="shield-check" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="font-display font-extrabold text-base text-slate-900">Bertanggung Jawab</h3>
+                    <p class="text-xs text-slate-500 mt-1">Amanah pada tugas & diri</p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-5 border border-slate-200/90 text-center shadow-sm kristal-card-hover">
+                    <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                        <i data-lucide="lightbulb" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="font-display font-extrabold text-base text-slate-900">Rajin Belajar</h3>
+                    <p class="text-xs text-slate-500 mt-1">Kritis, kreatif & eksploratif</p>
+                </div>
+
+                <div class="col-span-2 sm:col-span-1 bg-white rounded-3xl p-5 border border-slate-200/90 text-center shadow-sm kristal-card-hover">
+                    <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-kristal-royal text-amber-300 flex items-center justify-center">
+                        <i data-lucide="crown" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="font-display font-extrabold text-base text-slate-900">Berkarakter</h3>
+                    <p class="text-xs text-slate-500 mt-1">Profil Pelajar Pancasila</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 7. DOKUMENTASI PENERAPAN 7 KAIH (PENGUMPULAN BUKTI + GALERI FILTER)  -->
+    <!-- ===================================================================== -->
+    <section id="dokumentasi" class="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-5 mb-8 sm:mb-10">
+            <div class="space-y-2 max-w-2xl">
+                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-sky-100 text-kristal-blue font-bold text-xs uppercase tracking-wider">
+                    <i data-lucide="camera" class="w-3.5 h-3.5"></i> Bukti Nyata & Arsip Perlombaan
+                </span>
+                <h2 class="font-display font-extrabold fluid-section-title text-slate-900">
+                    Dokumentasi Penerapan 7 KAIH
+                </h2>
+                <p class="text-slate-600 text-sm sm:text-base">
+                    Unggah file bukti foto/dokumen penerapan 7 KAIH atau jelajahi galeri dokumentasi berdasarkan 7 kategori kebiasaan.
+                </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                <button onclick="toggleUploadFormPanel()" class="touch-target inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-kristal-royal hover:bg-blue-900 text-white font-bold text-xs sm:text-sm shadow-md transition cursor-pointer">
+                    <i data-lucide="upload-cloud" class="w-4 h-4 text-amber-300"></i>
+                    <span>Kumpulkan Bukti Dokumentasi</span>
+                </button>
+                <button onclick="exportDocumentationCSV()" class="touch-target inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-sm transition cursor-pointer">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span>Ekspor Rekap Bukti (.CSV)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- FORMULIR PENGUMPULAN FILE BUKTI DOKUMENTASI -->
+        <div id="doc-upload-panel" class="mb-10 bg-white rounded-3xl p-6 sm:p-8 border-2 border-sky-200 shadow-lg">
+            <div class="flex items-center justify-between gap-4 pb-4 mb-6 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-sky-100 text-kristal-royal flex items-center justify-center">
+                        <i data-lucide="folder-up" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-extrabold text-lg sm:text-xl text-slate-900">Formulir Pengumpulan File Bukti Dokumentasi 7 KAIH</h3>
+                        <p class="text-xs sm:text-sm text-slate-500">Mendukung unggahan foto kegiatan (JPG, PNG, WEBP) maupun file laporan/jurnal (PDF, DOCX).</p>
+                    </div>
+                </div>
+                <button onclick="toggleUploadFormPanel()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 cursor-pointer" title="Tutup/Buka Form">
+                    <i data-lucide="chevron-up" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="evidence-upload-form" onsubmit="submitDocumentationEvidence(event)" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Kolom Kiri (5 Kolom): Dropzone File Bukti & Pratinjau -->
+                <div class="lg:col-span-5 flex flex-col justify-between">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
+                            1. Pilih / Seret File Bukti (Foto / PDF / DOCX) *
+                        </label>
+                        <div id="evidence-dropzone"
+                             ondragover="handleEvidenceDragOver(event)"
+                             ondragleave="handleEvidenceDragLeave(event)"
+                             ondrop="handleEvidenceDrop(event)"
+                             onclick="document.getElementById('evidence-file-input').click()"
+                             class="border-2 border-dashed border-sky-300 hover:border-kristal-blue bg-sky-50/60 rounded-2xl p-5 text-center cursor-pointer transition min-h-[220px] flex flex-col items-center justify-center">
+
+                            <input id="evidence-file-input" type="file" accept="image/*,.pdf,.doc,.docx" onchange="handleEvidenceFileSelect(event)" class="hidden">
+
+                            <div id="evidence-upload-placeholder" class="space-y-2.5">
+                                <div class="w-12 h-12 mx-auto rounded-2xl bg-white text-kristal-blue shadow-sm flex items-center justify-center">
+                                    <i data-lucide="file-plus-2" class="w-6 h-6"></i>
+                                </div>
+                                <p class="font-bold text-sm text-slate-800">Klik untuk pilih file atau seret ke kotak ini</p>
+                                <p class="text-xs text-slate-500">Format: JPG, PNG, WEBP (Foto Kegiatan) atau PDF, DOCX (Dokumen Bukti)</p>
+                            </div>
+
+                            <div id="evidence-preview-box" class="hidden w-full space-y-2.5">
+                                <img id="evidence-preview-img" src="" alt="Pratinjau Bukti" class="hidden max-h-40 mx-auto rounded-xl object-contain border border-slate-200 bg-white">
+                                <div id="evidence-preview-doc" class="hidden p-4 rounded-xl bg-white border border-slate-200 flex items-center justify-center gap-2.5 text-kristal-royal">
+                                    <i data-lucide="file-text" class="w-7 h-7 text-amber-500"></i>
+                                    <span id="evidence-doc-filename" class="font-bold text-sm truncate max-w-[220px]">dokumen.pdf</span>
+                                </div>
+                                <p id="evidence-file-meta" class="text-xs font-semibold text-emerald-700"></p>
+                                <span class="inline-block text-[11px] font-bold text-kristal-blue underline">Klik untuk ganti file</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p id="evidence-form-feedback" class="hidden mt-3 text-xs font-bold px-3.5 py-2.5 rounded-xl"></p>
+                </div>
+
+                <!-- Kolom Kanan (7 Kolom): Metadata Bukti Kegiatan -->
+                <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            2. Kategori 7 KAIH *
+                        </label>
+                        <select id="ev-category" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-800 focus:outline-none focus:border-kristal-blue">
+                            <option value="bangun-pagi">01. Bangun Pagi</option>
+                            <option value="beribadah">02. Beribadah</option>
+                            <option value="berolahraga">03. Berolahraga</option>
+                            <option value="makan-sehat">04. Makan Sehat & Bergizi</option>
+                            <option value="gemar-belajar" selected>05. Gemar Belajar</option>
+                            <option value="bermasyarakat">06. Bermasyarakat</option>
+                            <option value="tidur-cepat">07. Tidur Cepat</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            3. Tanggal Kegiatan *
+                        </label>
+                        <input id="ev-date" type="date" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-medium text-slate-800 focus:outline-none focus:border-kristal-blue">
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            4. Nama Kegiatan *
+                        </label>
+                        <input id="ev-title" type="text" required placeholder="Contoh: Praktik Eksperimen Sains, Coding & Tutor Sebaya TIM KRISTAL" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-800 focus:outline-none focus:border-kristal-blue">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            5. Pelaksana (Siswa / Kelas / Tim) *
+                        </label>
+                        <input id="ev-actor" type="text" required placeholder="Contoh: Tim KRISTAL / Kelas XI IPA 1" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-800 focus:outline-none focus:border-kristal-blue">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            6. Tempat / Lokasi *
+                        </label>
+                        <input id="ev-location" type="text" required placeholder="Contoh: Lab Komputer SMA Negeri 3 Lebong" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-800 focus:outline-none focus:border-kristal-blue">
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            7. Keterangan Singkat Bukti *
+                        </label>
+                        <textarea id="ev-desc" rows="2" required placeholder="Tuliskan deskripsi singkat pelaksanaan kegiatan dan bukti yang dilampirkan..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-800 focus:outline-none focus:border-kristal-blue"></textarea>
+                    </div>
+
+                    <div class="sm:col-span-2 flex flex-wrap items-center justify-end gap-3 pt-1">
+                        <button type="reset" onclick="resetEvidencePreview()" class="touch-target px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm cursor-pointer">
+                            Reset Form
+                        </button>
+                        <button type="submit" class="touch-target px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-md flex items-center gap-2 cursor-pointer">
+                            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                            <span>Simpan ke Galeri Bukti</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tab Filter Berdasarkan 7 Kebiasaan (Scrollable Horizontal di HP, Wrap di Laptop/Tablet) -->
+        <div class="w-full overflow-x-auto no-scrollbar pb-2 mb-8">
+            <div id="doc-filter-tabs" class="flex sm:flex-wrap items-center sm:justify-center gap-2 whitespace-nowrap sm:whitespace-normal">
+                <!-- Tombol filter dirender lewat JS -->
+            </div>
+        </div>
+
+        <!-- Grid Galeri Dokumentasi -->
+        <div id="documentation-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Kartu dokumentasi dirender lewat JS -->
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 8. BAGIAN PRESTASI DAN DAMPAK STATISTIK BESAR                         -->
+    <!-- ===================================================================== -->
+    <section id="prestasi" class="py-14 sm:py-20 bg-white border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-3">
+                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-xs uppercase tracking-wider">
+                    <i data-lucide="trophy" class="w-3.5 h-3.5"></i> Capaian & Dampak Program
+                </span>
+                <h2 class="font-display font-extrabold fluid-section-title text-slate-900">
+                    Prestasi & Statistik Dampak 7 KAIH
+                </h2>
+                <p class="text-slate-600 text-sm sm:text-base">
+                    Angka indikator keberhasilan program berbasis dataset empiris TIM KRISTAL SMA Negeri 3 Lebong.
+                </p>
+            </div>
+
+            <!-- 6 Kartu Angka Statistik Besar -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <div class="bg-slate-50 rounded-3xl p-6 border border-slate-200/90 flex items-center gap-5 kristal-card-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-kristal-royal text-white flex items-center justify-center shrink-0 shadow-md">
+                        <i data-lucide="users" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <p class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">785</p>
+                        <p class="font-bold text-sm text-kristal-royal">Siswa Aktif Mengikuti Program</p>
+                        <p class="text-xs text-slate-500 mt-0.5">3.140 total respons jurnal & survei</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 rounded-3xl p-6 border border-slate-200/90 flex items-center gap-5 kristal-card-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                        <i data-lucide="pie-chart" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <p class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">100%</p>
+                        <p class="font-bold text-sm text-emerald-700">Keterlibatan Populasi Survei</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Mencakup seluruh jenjang Kelas X, XI & XII</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 rounded-3xl p-6 border border-slate-200/90 flex items-center gap-5 kristal-card-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-kristal-blue text-white flex items-center justify-center shrink-0 shadow-md">
+                        <i data-lucide="calendar-check-2" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <p class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">42+</p>
+                        <p class="font-bold text-sm text-kristal-blue">Kegiatan Terprogram Terlaksana</p>
+                        <p class="text-xs text-slate-500 mt-0.5">4 Gelombang evaluasi berkelanjutan</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 rounded-3xl p-6 border border-slate-200/90 flex items-center gap-5 kristal-card-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-md">
+                        <i data-lucide="folder-check" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <p id="stat-doc-count" class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">140+</p>
+                        <p class="font-bold text-sm text-amber-700">Bukti Dokumentasi Terarsip</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Foto kegiatan, jurnal & unggahan siswa</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 rounded-3xl p-6 border border-slate-200/90 flex items-center gap-5 kristal-card-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                        <i data-lucide="trending-up" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <p class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">+13,2%</p>
+                        <p class="font-bold text-sm text-indigo-700">Kenaikan Rata-rata (P1 ke P4)</p>
+                        <p class="text-xs text-slate-500 mt-0.5">72,3% kohort meningkat konsisten</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 rounded-3xl p-6 border border-slate-200/90 flex items-center gap-5 kristal-card-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-kristal-teal text-white flex items-center justify-center shrink-0 shadow-md">
+                        <i data-lucide="medal" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <p class="font-display font-extrabold text-3xl sm:text-4xl text-slate-900">174</p>
+                        <p class="font-bold text-sm text-kristal-teal">Siswa Kategori Teladan (22,2%)</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Skor konsistensi tinggi ≥ 3,25 / 4,00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kartu Pencapaian & Prestasi Sekolah serta Perubahan Positif Nyata -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-gradient-to-br from-kristal-navy to-kristal-royal text-white rounded-3xl p-7 shadow-lg">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-11 h-11 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center">
+                            <i data-lucide="trophy" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-xl">Pencapaian & Prestasi Sekolah</h3>
+                    </div>
+                    <ul class="space-y-3.5 text-sm sm:text-base text-sky-100">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-amber-300 shrink-0 mt-0.5"></i>
+                            <span><strong class="text-white">Sistem Pemetaan Data Empiris TIM KRISTAL:</strong> Berhasil memvalidasi 3.140 respons longitudinal (P1–P4) pada 14 indikator perilaku siswa secara objektif.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-amber-300 shrink-0 mt-0.5"></i>
+                            <span><strong class="text-white">174 Duta Pelajar Teladan (≥3,25):</strong> Siswa teladan aktif menggerakkan budaya gotong royong, tutor sebaya, dan pendampingan teman sejawat.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-amber-300 shrink-0 mt-0.5"></i>
+                            <span><strong class="text-white">Kolaborasi Sekolah, Komite & Orang Tua:</strong> Sinergi pemantauan jam tidur &lt;22.30 WIB serta program kantin sehat bergizi di SMA Negeri 3 Lebong.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-sky-50 border border-sky-200 rounded-3xl p-7 shadow-sm">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-11 h-11 rounded-xl bg-kristal-blue text-white flex items-center justify-center">
+                            <i data-lucide="sparkles" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-xl text-slate-900">Perubahan Positif Nyata Setelah Penerapan</h3>
+                    </div>
+                    <ul class="space-y-3.5 text-sm sm:text-base text-slate-700">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="arrow-up-right" class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5"></i>
+                            <span><strong>Kesegaran & Kesiapan Belajar Meningkat:</strong> 75,7% siswa yang tidur sebelum pukul 22.30 WIB merasa sangat segar di kelas dan 84,2% bangun sebelum pukul 05.30 WIB.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="arrow-up-right" class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5"></i>
+                            <span><strong>Solidaritas & Kepedulian Sosial Menguat:</strong> Dimensi Bermasyarakat meraih skor tertinggi (3,24) dengan 86,1% siswa aktif membantu teman secara sukarela.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="arrow-up-right" class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5"></i>
+                            <span><strong>Kemandirian Ibadah & Belajar Naik Signifikan:</strong> Beribadah melonjak +17,1% (2,63 → 3,08) dan Gemar Belajar tumbuh +11,3% melalui pembelajaran aktif.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- FOOTER IDENTITAS TIM KRISTAL                                          -->
+    <!-- ===================================================================== -->
+    <footer class="bg-kristal-navy text-slate-400 py-10 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-kristal-blue/20 border border-sky-500/30 flex items-center justify-center text-sky-400">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L3 9l9 13 9-13-9-7zm0 2.6L17.8 9H6.2L12 4.6zM6.1 10.5h11.8L12 18.8l-5.9-8.3z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="font-display font-bold text-white text-sm">TIM KRISTAL — SMA Negeri 3 Lebong</p>
+                    <p class="text-xs text-slate-400">Karya Remaja InSpiratif Teknologi Andalan Lebong</p>
+                </div>
+            </div>
+            <p class="text-xs text-slate-400">
+                Dashboard Perlombaan Nasional 7 Kebiasaan Anak Indonesia Hebat (7 KAIH) • © 2026
+            </p>
+        </div>
+    </footer>
+
+    <!-- ===================================================================== -->
+    <!-- STICKY MOBILE QUICK-NAVIGATION BAR (KHUSUS LAYAR HP < 768px)          -->
+    <!-- ===================================================================== -->
+    <nav aria-label="Navigasi Cepat HP" class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-[0_-6px_20px_rgba(11,31,58,0.08)] pb-[env(safe-area-inset-bottom)]">
+        <div class="grid grid-cols-6 h-16">
+            <a href="#beranda" class="flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-slate-600 hover:text-kristal-royal active:text-kristal-blue">
+                <i data-lucide="home" class="w-4 h-4"></i>
+                <span>Beranda</span>
+            </a>
+            <a href="#7kaih" class="flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-slate-600 hover:text-kristal-royal active:text-kristal-blue">
+                <i data-lucide="grid" class="w-4 h-4"></i>
+                <span>7 KAIH</span>
+            </a>
+            <a href="#perkembangan" class="flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-slate-600 hover:text-kristal-royal active:text-kristal-blue">
+                <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+                <span>Grafik</span>
+            </a>
+            <a href="#rencana" class="flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-slate-600 hover:text-kristal-royal active:text-kristal-blue">
+                <i data-lucide="rocket" class="w-4 h-4"></i>
+                <span>Rencana</span>
+            </a>
+            <a href="#dokumentasi" class="flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-slate-600 hover:text-kristal-royal active:text-kristal-blue">
+                <i data-lucide="camera" class="w-4 h-4"></i>
+                <span>Bukti</span>
+            </a>
+            <a href="#prestasi" class="flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold text-slate-600 hover:text-kristal-royal active:text-kristal-blue">
+                <i data-lucide="trophy" class="w-4 h-4"></i>
+                <span>Prestasi</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL DETAIL INTERAKTIF (7 KAIH, RENCANA PERBAIKAN, BUKTI & SHEET)    -->
+    <!-- ===================================================================== -->
+    <div id="detail-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4 bg-slate-950/75 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200">
+            <div id="modal-content" class="p-5 sm:p-8">
+                <!-- Konten modal diisi secara dinamis -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- JAVASCRIPT DATA EMPIRIS & LOGIKA INTERAKTIF                           -->
+    <!-- ===================================================================== -->
+    <script>
+        // 1. DATA 7 KEBIASAAN ANAK INDONESIA HEBAT (DATASET EMPIRIS SMAN 3 LEBONG)
+        const kaihData = [
+            {
+                id: 'bangun-pagi',
+                number: '01',
+                title: 'Bangun Pagi',
+                icon: 'sunrise',
+                color: 'from-amber-500 to-orange-500',
+                badgeBg: 'bg-amber-100 text-amber-800',
+                score: 3.17,
+                p1: 2.97,
+                p2: 3.13,
+                p3: 3.14,
+                p4: 3.44,
+                growth: '+15,8%',
+                shortDesc: 'Membiasakan bangun awal sebelum pukul 05.30 WIB untuk melatih disiplin waktu dan kesiapan beraktivitas.',
+                examples: ['Bangun tepat waktu sebelum pukul 05.30 WIB', 'Merapikan tempat tidur sendiri', 'Menyiapkan perlengkapan & bersiap sekolah'],
+                indicator: '84,2% siswa bangun sebelum pukul 05.30 WIB (Skor 3,17/4,00)',
+                characterValues: ['Disiplin Waktu', 'Kemandirian', 'Kesiapan Diri'],
+                empiricalNote: 'Memiliki korelasi terkuat (r = 0,497) dengan kebiasaan Tidur Cepat sebelum pukul 22.30 WIB.'
+            },
+            {
+                id: 'beribadah',
+                number: '02',
+                title: 'Beribadah',
+                icon: 'heart-handshake',
+                color: 'from-emerald-500 to-teal-600',
+                badgeBg: 'bg-emerald-100 text-emerald-800',
+                score: 2.83,
+                p1: 2.63,
+                p2: 2.81,
+                p3: 2.83,
+                p4: 3.08,
+                growth: '+17,1%',
+                shortDesc: 'Menumbuhkan kebiasaan beribadah sesuai agama dan kepercayaan masing-masing dengan penuh kesadaran.',
+                examples: ['Melaksanakan ibadah wajib/rutin tepat waktu', 'Berdoa bersama sebelum & sesudah belajar', 'Refleksi syukur harian'],
+                indicator: '30,4% konsisten tinggi & pertumbuhan tertinggi +17,1% (Skor 2,83/4,00)',
+                characterValues: ['Disiplin', 'Rasa Syukur', 'Tanggung Jawab'],
+                empiricalNote: 'Kemandirian beribadah meningkat bertahap dari Kelas X (2,70) → XI (2,82) → XII (2,96).'
+            },
+            {
+                id: 'berolahraga',
+                number: '03',
+                title: 'Berolahraga',
+                icon: 'dumbbell',
+                color: 'from-sky-500 to-blue-600',
+                badgeBg: 'bg-sky-100 text-sky-800',
+                score: 2.88,
+                p1: 2.71,
+                p2: 2.83,
+                p3: 2.87,
+                p4: 3.11,
+                growth: '+14,8%',
+                shortDesc: 'Membiasakan aktivitas fisik teratur 20–30 menit untuk menjaga kesehatan dan kebugaran tubuh.',
+                examples: ['Senam Anak Indonesia Hebat', 'Jalan kaki atau lari pagi', 'Permainan olahraga tim (futsal, voli, bulu tangkis)'],
+                indicator: '71,6% siswa aktif bergerak rutin setiap minggu (Skor 2,88/4,00)',
+                characterValues: ['Kebugaran', 'Sportivitas', 'Ketahanan Fisik'],
+                empiricalNote: '64,2% siswa rutin berolahraga 20–30 menit dan terus diperkuat lewat senam kreasi inklusif.'
+            },
+            {
+                id: 'makan-sehat',
+                number: '04',
+                title: 'Makan Sehat dan Bergizi',
+                icon: 'apple',
+                color: 'from-lime-500 to-green-600',
+                badgeBg: 'bg-lime-100 text-lime-800',
+                score: 2.87,
+                p1: 2.77,
+                p2: 2.85,
+                p3: 2.84,
+                p4: 3.03,
+                growth: '+9,4%',
+                shortDesc: 'Membiasakan memilih makanan bergizi seimbang, air putih, serta membatasi minuman manis dan junk food.',
+                examples: ['Sarapan bergizi sebelum berangkat sekolah', 'Konsumsi sayur, buah & protein seimbang', 'Membawa tumbler air putih & kurangi minuman manis'],
+                indicator: 'Skor sarapan bergizi mencapai 3,04/4,00 (Rata-rata domain 2,87/4,00)',
+                characterValues: ['Kesadaran Gizi', 'Pengendalian Diri', 'Hidup Sehat'],
+                empiricalNote: 'Fokus intervensi pada pembatasan minuman berpemanis dan junk food (skor 2,70).'
+            },
+            {
+                id: 'gemar-belajar',
+                number: '05',
+                title: 'Gemar Belajar',
+                icon: 'brain-circuit',
+                color: 'from-indigo-500 to-blue-700',
+                badgeBg: 'bg-indigo-100 text-indigo-800',
+                score: 2.69,
+                p1: 2.57,
+                p2: 2.65,
+                p3: 2.68,
+                p4: 2.86,
+                growth: '+11,3%',
+                shortDesc: 'Mendorong rasa ingin tahu melalui membaca, mengerjakan tugas mandiri, diskusi kelompok, eksperimen, dan keterampilan baru.',
+                examples: ['Eksperimen sains, coding & proyek kreatif', 'Diskusi kelompok & tutor sebaya (peer-teaching)', 'Membaca buku/artikel & mengerjakan tugas mandiri'],
+                indicator: 'Tumbuh +11,3% dari P1 ke P4 melalui pembelajaran aktif holistik (Skor 2,69/4,00)',
+                characterValues: ['Rasa Ingin Tahu', 'Berpikir Kritis', 'Kreativitas'],
+                empiricalNote: 'Diperluas melampaui literasi teks ke arah eksplorasi STEM, diskusi aktif, dan belajar mandiri ≥30 menit.'
+            },
+            {
+                id: 'bermasyarakat',
+                number: '06',
+                title: 'Bermasyarakat',
+                icon: 'users',
+                color: 'from-cyan-500 to-teal-600',
+                badgeBg: 'bg-cyan-100 text-cyan-800',
+                score: 3.24,
+                p1: 3.10,
+                p2: 3.22,
+                p3: 3.24,
+                p4: 3.42,
+                growth: '+10,3%',
+                shortDesc: 'Membiasakan berinteraksi positif, gotong royong, peduli, dan membantu sesama di sekolah maupun lingkungan.',
+                examples: ['Gotong royong kebersihan kelas & sekolah', 'Membantu teman secara sukarela dalam belajar', 'Kerja bakti & kegiatan sosial lingkungan sekitar'],
+                indicator: 'Peringkat #1 terkuat: 86,1% aktif membantu teman (Skor 3,24/4,00)',
+                characterValues: ['Empati', 'Gotong Royong', 'Toleransi'],
+                empiricalNote: '53,3% siswa berada pada kategori konsisten tinggi (≥ 3,50).'
+            },
+            {
+                id: 'tidur-cepat',
+                number: '07',
+                title: 'Tidur Cepat',
+                icon: 'moon-star',
+                color: 'from-slate-700 to-indigo-900',
+                badgeBg: 'bg-slate-200 text-slate-800',
+                score: 3.15,
+                p1: 2.98,
+                p2: 3.12,
+                p3: 3.13,
+                p4: 3.38,
+                growth: '+13,4%',
+                shortDesc: 'Tidur cukup dan teratur sebelum pukul 22.30 WIB untuk kesehatan fisik dan kesiapan fokus belajar di kelas.',
+                examples: ['Menghentikan penggunaan gawai 30 menit sebelum tidur', 'Tidur teratur sebelum pukul 22.30 WIB', 'Menjaga durasi istirahat 7–8 jam per malam'],
+                indicator: '77,7% tidur <22.30 WIB & 75,7% merasa sangat segar di kelas (Skor 3,15/4,00)',
+                characterValues: ['Kesehatan Fisik', 'Fokus Belajar', 'Keteraturan'],
+                empiricalNote: 'Siswa tidur teratur 4 hari penuh 2x lebih segar di kelas dibanding kelompok 0 hari (75,7% vs 40,8%).'
+            }
+        ];
+
+        // 2. DATA 7 KARTU CANVAS RENCANA PERBAIKAN INTERAKTIF (UNTUK MENAIKKAN GRAFIK MENUJU 100%)
+        const actionPlans = [
+            {
+                id: 'plan-belajar',
+                number: '05',
+                badge: 'PRIORITAS UTAMA #1 • HOLISTIK NON-LITERASI & LITERASI',
+                badgeColor: 'bg-indigo-100 text-indigo-800 border-indigo-300',
+                icon: 'brain-circuit',
+                iconBg: 'bg-indigo-600 text-white',
+                title: '05. Aksi Gemar Belajar Menyeluruh (Bukan Literasi Saja)',
+                currentScore: '2,69 (67%)',
+                targetScore: '3,80 (95%+)',
+                owner: 'TIM KRISTAL, Kurikulum, Wali Kelas & MGMP Sekolah',
+                summary: 'Memperluas kegiatan Gemar Belajar agar mencakup eksperimen sains/teknologi, diskusi kelompok, tutor sebaya, penyelesaian tugas mandiri, keterampilan baru, serta literasi terjadwal.',
+                actions: [
+                    '1. Eksplorasi & Praktikum Sains/Teknologi (STEM): Eksperimen mini mingguan dan proyek inovasi remaja bersama TIM KRISTAL.',
+                    '2. Diskusi Kelompok & Tutor Sebaya (Peer-Teaching): Sesi belajar kolaboratif antar siswa untuk membedah konsep pelajaran sulit.',
+                    '3. Penyelesaian Tugas Mandiri & Target Belajar ≥ 30 Menit/Hari: Manajemen waktu belajar di rumah yang dicatat pada Jurnal Spreadsheet.',
+                    '4. Penguasaan Keterampilan Baru & Karya Kreatif: Pelatihan coding, desain digital, riset karya ilmiah remaja, dan keterampilan vokasional.',
+                    '5. Literasi & Membaca Terjadwal 15 Menit Sebelum Jam Pertama: Membaca buku pengayaan maupun artikel ilmiah terkurasi.'
+                ],
+                impacts: [
+                    'Meningkatkan kemampuan berpikir kritis dan pemecahan masalah nyata (problem solving) siswa.',
+                    'Menumbuhkan kemandirian belajar tanpa paksaan serta ketuntasan tugas tepat waktu.',
+                    'Meningkatkan keberanian berkolaborasi dan berdiskusi aktif di dalam kelas.',
+                    'Mendorong kreativitas menghasilkan karya teknologi dan akademik yang siap dilombakan.'
+                ]
+            },
+            {
+                id: 'plan-gizi',
+                number: '04',
+                badge: 'PRIORITAS #2 • INTERVENSI KANTIN & GIZI',
+                badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+                icon: 'apple',
+                iconBg: 'bg-emerald-600 text-white',
+                title: '04. Gerakan Kantin Sehat & Batasi Minuman Manis',
+                currentScore: '2,87 (72%)',
+                targetScore: '3,75 (94%+)',
+                owner: 'Pokja Kantin Sehat, Pembina UKS & OSIS',
+                summary: 'Mengatasi kesenjangan pembatasan minuman berpemanis dan junk food (skor 2,70) melalui regulasi kantin sehat dan tantangan bekal bergizi.',
+                actions: [
+                    'Gerakan "Bawa Tumbler Air Putih" setiap hari ke sekolah untuk menekan konsumsi minuman kemasan berpemanis.',
+                    'Standarisasi menu bergizi seimbang di kantin SMA Negeri 3 Lebong dan pengurangan jajanan tinggi gula/penyedap.',
+                    'Program "Rabu Bekal Sehat" berisi sayur, buah, dan protein lokal bersama wali kelas.'
+                ],
+                impacts: [
+                    'Menjaga kestabilan energi dan konsentrasi belajar siswa hingga jam pelajaran terakhir.',
+                    'Meningkatkan kebiasaan memilih makanan bergizi dan menurunkan konsumsi junk food.'
+                ]
+            },
+            {
+                id: 'plan-ibadah',
+                number: '02',
+                badge: 'PENGUATAN KEMANDIRIAN SPIRITUAL',
+                badgeColor: 'bg-teal-100 text-teal-800 border-teal-300',
+                icon: 'heart-handshake',
+                iconBg: 'bg-teal-600 text-white',
+                title: '02. Ibadah Mandiri & Jurnal Refleksi Syukur',
+                currentScore: '2,83 (71%)',
+                targetScore: '3,80 (95%+)',
+                owner: 'Pembina Rohis, Guru Agama & Wali Kelas X–XII',
+                summary: 'Meningkatkan kemandirian beribadah atas kesadaran sendiri tanpa diingatkan, terutama penguatan sejak Kelas X (skor 2,70).',
+                actions: [
+                    'Pembiasaan doa bersama dan refleksi rasa syukur 5 menit sebelum pelajaran jam pertama.',
+                    'Jadwal ibadah berjamaah teratur di sekolah dengan presensi kejujuran pada Jurnal Harian.',
+                    'Pendampingan karakter spiritual intensif bagi siswa baru Kelas X.'
+                ],
+                impacts: [
+                    'Menumbuhkan disiplin spiritual, kejujuran diri, dan tanggung jawab moral.',
+                    'Meratakan capaian kemandirian ibadah di seluruh jenjang kelas.'
+                ]
+            },
+            {
+                id: 'plan-olahraga',
+                number: '03',
+                badge: 'AKSELERASI KEBUGARAN INKLUSIF',
+                badgeColor: 'bg-sky-100 text-sky-800 border-sky-300',
+                icon: 'dumbbell',
+                iconBg: 'bg-kristal-blue text-white',
+                title: '03. Gerak Aktif Inklusif & Senam Kreasi 25 Menit',
+                currentScore: '2,88 (72%)',
+                targetScore: '3,75 (94%+)',
+                owner: 'Guru PJOK, Ekstrakurikuler Olahraga & OSIS',
+                summary: 'Meningkatkan durasi olahraga 20–30 menit secara merata bagi siswa laki-laki maupun perempuan.',
+                actions: [
+                    'Senam Kreasi Anak Indonesia Hebat rutin setiap Jumat pagi di lapangan utama sekolah.',
+                    'Liga olahraga rekreasi inklusif (bulu tangkis, senam irama, jalan sehat) yang ramah siswi.',
+                    'Tantangan aktivitas fisik harian 20–30 menit yang tercatat di Jurnal Spreadsheet.'
+                ],
+                impacts: [
+                    'Menutup selisih aktivitas fisik antara siswa laki-laki (3,07) dan perempuan (2,77).',
+                    'Meningkatkan kebugaran jasmani dan mengurangi kelelahan belajar.'
+                ]
+            },
+            {
+                id: 'plan-tidur',
+                number: '07',
+                badge: 'EFEK DOMINO KESEGARAN PAGI',
+                badgeColor: 'bg-slate-200 text-slate-800 border-slate-300',
+                icon: 'moon-star',
+                iconBg: 'bg-slate-800 text-white',
+                title: '07. Komitmen Digital Detox & Jam Tidur 22.30 WIB',
+                currentScore: '3,15 (79%)',
+                targetScore: '3,85 (96%+)',
+                owner: 'Orang Tua Murid, Komite Sekolah & Guru BK',
+                summary: 'Memaksimalkan korelasi terkuat (r = 0,497) antara tidur sebelum 22.30 WIB dengan bangun pagi dan kesegaran di kelas.',
+                actions: [
+                    'Kampanye "Matikan Layar Gawai Pukul 22.00 WIB" melibatkan orang tua di rumah.',
+                    'Sosialisasi bukti empiris (75,7% segar vs 40,8%) pada pertemuan komite sekolah.',
+                    'Apresiasi bulanan bagi kelas dengan tingkat kesegaran pagi tertinggi.'
+                ],
+                impacts: [
+                    'Meningkatkan persentase siswa sangat segar di kelas dari 75,7% menuju >90%.',
+                    'Memperbaiki kualitas istirahat dan daya ingat pelajaran siswa.'
+                ]
+            },
+            {
+                id: 'plan-bangun',
+                number: '01',
+                badge: 'KONSISTENSI DISIPLIN SUBUH',
+                badgeColor: 'bg-amber-100 text-amber-800 border-amber-300',
+                icon: 'sunrise',
+                iconBg: 'bg-amber-500 text-white',
+                title: '01. Gerakan Bangun <05.30 WIB & Kelas Tepat Waktu',
+                currentScore: '3,17 (79%)',
+                targetScore: '3,90 (98%+)',
+                owner: 'Tim Ketertiban, OSIS & Wali Kelas',
+                summary: 'Mengangkat capaian bangun pagi dari 84,2% menuju hampir seluruh siswa terbiasa bangun sebelum pukul 05.30 WIB.',
+                actions: [
+                    'Penyambutan pagi ramah siswa oleh guru piket dan OSIS mulai pukul 06.45 WIB.',
+                    'Checklist persiapan mandiri pagi (merapikan tempat tidur & perlengkapan sekolah).',
+                    'Pendampingan khusus bagi 12,6% siswa yang masih terlambat bangun pagi.'
+                ],
+                impacts: [
+                    'Menekan angka keterlambatan masuk sekolah mendekati 0%.',
+                    'Membentuk ritme hidup teratur dan kesiapan mental sejak pagi hari.'
+                ]
+            },
+            {
+                id: 'plan-masyarakat',
+                number: '06',
+                badge: 'KEUNGGULAN #1 • DUTA TELADAN',
+                badgeColor: 'bg-cyan-100 text-cyan-800 border-cyan-300',
+                icon: 'users',
+                iconBg: 'bg-kristal-teal text-white',
+                title: '06. Program Kakak Asuh 174 Duta Teladan',
+                currentScore: '3,24 (81%)',
+                targetScore: '3,95 (99%+)',
+                owner: '174 Siswa Teladan, OSIS & Guru BK',
+                summary: 'Mempertahankan posisi puncak Bermasyarakat (3,24) sekaligus mengerahkan 174 Duta Teladan untuk mendampingi 91 siswa prioritas (<2,50).',
+                actions: [
+                    'Satu Duta Teladan mendampingi 1–2 teman sekelas dalam pengisian Jurnal Harian Spreadsheet.',
+                    'Program Jumat Bersih & Bank Sampah Kelas berbasis gotong royong mingguan.',
+                    'Aksi peduli sosial & bakti lingkungan sekitar SMA Negeri 3 Lebong.'
+                ],
+                impacts: [
+                    'Seluruh 785 siswa bergerak naik bersama secara inklusif tanpa ada yang tertinggal.',
+                    'Memperkuat kepemimpinan, empati sosial, dan budaya positif sekolah.'
+                ]
+            }
+        ];
+
+        // 3. DATA DOKUMENTASI PENERAPAN 7 KAIH (BERDASARKAN 7 KATEGORI)
+        const defaultDocumentationItems = [
+            {
+                id: 'doc-1',
+                category: 'bangun-pagi',
+                categoryLabel: '01. Bangun Pagi',
+                title: 'Apel Pagi & Penyambutan Siswa Tepat Waktu',
+                actor: 'OSIS & Siswa Kelas X–XII',
+                date: '04 November 2026',
+                location: 'Gerbang Utama SMA Negeri 3 Lebong',
+                desc: '84,2% siswa hadir lebih awal dengan semangat pagi setelah membiasakan bangun sebelum pukul 05.30 WIB.',
+                gradient: 'from-amber-400 to-orange-500',
+                icon: 'sunrise',
+                isCustom: false
+            },
+            {
+                id: 'doc-2',
+                category: 'beribadah',
+                categoryLabel: '02. Beribadah',
+                title: 'Doa Bersama & Ibadah Berjamaah di Sekolah',
+                actor: 'Rohis & Seluruh Warga Sekolah',
+                date: '08 November 2026',
+                location: 'Mushola & Ruang Kelas SMAN 3 Lebong',
+                desc: 'Pembiasaan berdoa sebelum belajar dan shalat berjamaah untuk menumbuhkan rasa syukur serta kedisiplinan spiritual.',
+                gradient: 'from-emerald-500 to-teal-600',
+                icon: 'heart-handshake',
+                isCustom: false
+            },
+            {
+                id: 'doc-3',
+                category: 'berolahraga',
+                categoryLabel: '03. Berolahraga',
+                title: 'Senam Anak Indonesia Hebat & Olahraga Bersama',
+                actor: 'Guru PJOK & 785 Siswa',
+                date: '13 November 2026',
+                location: 'Lapangan Upacara SMA Negeri 3 Lebong',
+                desc: 'Seluruh siswa dan guru mengikuti senam kebugaran rutin selama 30 menit untuk menjaga stamina belajar.',
+                gradient: 'from-sky-500 to-blue-600',
+                icon: 'dumbbell',
+                isCustom: false
+            },
+            {
+                id: 'doc-4',
+                category: 'makan-sehat',
+                categoryLabel: '04. Makan Sehat & Bergizi',
+                title: 'Gerakan Sarapan Bergizi & Bawa Tumbler Sehat',
+                actor: 'Kader UKS & Pokja Kantin Sehat',
+                date: '15 November 2026',
+                location: 'Selasar Kelas & Kantin Sehat SMAN 3 Lebong',
+                desc: 'Siswa membawa bekal makanan seimbang bergizi dan tumbler air putih guna mengurangi konsumsi minuman berpemanis.',
+                gradient: 'from-lime-500 to-green-600',
+                icon: 'apple',
+                isCustom: false
+            },
+            {
+                id: 'doc-5',
+                category: 'gemar-belajar',
+                categoryLabel: '05. Gemar Belajar',
+                title: 'Eksplorasi Coding TIM KRISTAL, Praktik Sains & Tutor Sebaya',
+                actor: 'TIM KRISTAL & Kelompok Riset Siswa',
+                date: '18 November 2026',
+                location: 'Lab Komputer & Perpustakaan SMAN 3 Lebong',
+                desc: 'Siswa aktif melakukan praktik pemrograman, eksperimen sains, diskusi kelompok, dan membaca 15 menit sebelum pelajaran.',
+                gradient: 'from-indigo-500 to-blue-700',
+                icon: 'brain-circuit',
+                isCustom: false
+            },
+            {
+                id: 'doc-6',
+                category: 'bermasyarakat',
+                categoryLabel: '06. Bermasyarakat',
+                title: 'Gotong Royong Jumat Bersih & Pendampingan Sebaya',
+                actor: '174 Duta Teladan & Perwakilan Kelas',
+                date: '20 November 2026',
+                location: 'Lingkungan Sekolah & Taman SMAN 3 Lebong',
+                desc: 'Kolaborasi 86,1% siswa menjaga keasrian sekolah serta saling membantu rekan dalam memahami pelajaran.',
+                gradient: 'from-cyan-500 to-teal-600',
+                icon: 'users',
+                isCustom: false
+            },
+            {
+                id: 'doc-7',
+                category: 'tidur-cepat',
+                categoryLabel: '07. Tidur Cepat',
+                title: 'Sosialisasi Komitmen Tidur <22.30 WIB Bersama Orang Tua',
+                actor: 'Komite Sekolah, Wali Kelas & Orang Tua',
+                date: '21 November 2026',
+                location: 'Aula SMA Negeri 3 Lebong',
+                desc: 'Edukasi dampak tidur teratur terhadap kesegaran pagi di kelas (terbukti 75,7% siswa sangat segar belajar).',
+                gradient: 'from-slate-700 to-indigo-900',
+                icon: 'moon-star',
+                isCustom: false
+            }
+        ];
+
+        // State Aplikasi
+        let activeWaveFilter = 'all';
+        let activeDocFilter = 'all';
+        let customDocumentationItems = JSON.parse(localStorage.getItem('kristal_custom_docs_7kaih')) || [];
+        let selectedEvidenceFile = null;
+        let dailyCheckedState = JSON.parse(localStorage.getItem('kristal_daily_7kaih')) || {
+            'bangun-pagi': true,
+            'beribadah': true,
+            'berolahraga': false,
+            'makan-sehat': true,
+            'gemar-belajar': false,
+            'bermasyarakat': true,
+            'tidur-cepat': false
+        };
+        let spreadsheetUrl = localStorage.getItem('kristal_spreadsheet_url') || 'https://docs.google.com/spreadsheets/create';
+
+        // =====================================================================
+        // RENDER 7 KARTU BESAR 7 KAIH
+        // =====================================================================
+        function renderKaihCards() {
+            const grid = document.getElementById('kaih-cards-grid');
+            grid.innerHTML = kaihData.map(item => {
+                const pct = Math.round((item.score / 4.0) * 100);
+                return `
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm kristal-card-hover flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-13 h-13 p-3 rounded-2xl bg-gradient-to-br ${item.color} text-white shadow-md">
+                                    <i data-lucide="${item.icon}" class="w-7 h-7"></i>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-display font-extrabold text-xs px-2.5 py-1 rounded-full ${item.badgeBg}">
+                                        KEBIASAAN #${item.number}
+                                    </span>
+                                    <p class="font-display font-extrabold text-lg text-slate-900 mt-1">${item.score.toFixed(2).replace('.', ',')} <span class="text-xs font-semibold text-slate-400">/ 4,00</span></p>
+                                </div>
+                            </div>
+
+                            <h3 class="font-display font-extrabold text-xl text-slate-900 mb-2">${item.title}</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-4">${item.shortDesc}</p>
+
+                            <!-- Contoh Kegiatan Ringkas -->
+                            <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-100 mb-4">
+                                <p class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1.5">Contoh Kegiatan:</p>
+                                <ul class="space-y-1 text-xs text-slate-700">
+                                    ${item.examples.map(ex => `
+                                        <li class="flex items-start gap-1.5">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-kristal-blue mt-1.5 shrink-0"></span>
+                                            <span>${ex}</span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+
+                            <!-- Indikator Pencapaian -->
+                            <div class="bg-sky-50/80 rounded-2xl p-3 border border-sky-100 mb-4">
+                                <div class="flex items-center justify-between text-xs font-bold text-kristal-royal mb-1">
+                                    <span>Indikator Capaian</span>
+                                    <span>${pct}% (${item.growth})</span>
+                                </div>
+                                <p class="text-[11px] text-slate-700 leading-snug">${item.indicator}</p>
+                            </div>
+                        </div>
+
+                        <button onclick="openKaihDetailModal('${item.id}')" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-kristal-royal text-white font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer">
+                            <span>Detail & Indikator Empiris</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // =====================================================================
+        // RENDER PROGRESS BAR PERKEMBANGAN 7 KAIH (FILTER GELOMBANG P1-P4)
+        // =====================================================================
+        function setWaveFilter(wave) {
+            activeWaveFilter = wave;
+            document.querySelectorAll('.wave-btn').forEach(btn => {
+                if (btn.dataset.wave === wave) {
+                    btn.className = 'wave-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-kristal-royal text-white shadow-sm cursor-pointer';
+                } else {
+                    btn.className = 'wave-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 cursor-pointer';
+                }
+            });
+
+            const titles = {
+                all: 'Capaian Tiap Kebiasaan (Rata-rata P1–P4)',
+                p1: 'Capaian Gelombang P1 (Awal Pengamatan, N = 820)',
+                p2: 'Capaian Gelombang P2 (Pemantauan 2, N = 768)',
+                p3: 'Capaian Gelombang P3 (Pemantauan 3, N = 790)',
+                p4: 'Capaian Gelombang P4 (Terkini, N = 762)'
+            };
+            document.getElementById('progress-panel-title').textContent = titles[wave] || titles.all;
+            renderProgressBars();
+        }
+
+        function renderProgressBars() {
+            const container = document.getElementById('progress-bars-list');
+            const sorted = [...kaihData].sort((a, b) => {
+                const valA = activeWaveFilter === 'all' ? a.score : a[activeWaveFilter];
+                const valB = activeWaveFilter === 'all' ? b.score : b[activeWaveFilter];
+                return valB - valA;
+            });
+
+            container.innerHTML = sorted.map((item, idx) => {
+                const val = activeWaveFilter === 'all' ? item.score : item[activeWaveFilter];
+                const pct = Math.round((val / 4.0) * 100);
+                const isLow = val < 2.85;
+
+                return `
+                    <div>
+                        <div class="flex items-center justify-between text-xs sm:text-sm font-bold mb-1.5">
+                            <div class="flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-md bg-slate-200 text-slate-700 text-[11px] flex items-center justify-center font-extrabold">#${idx + 1}</span>
+                                <span class="text-slate-800">${item.title}</span>
+                                ${item.id === 'gemar-belajar' ? '<span class="px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 text-[10px] font-extrabold">Fokus Akselerasi</span>' : ''}
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-slate-500 font-semibold">${val.toFixed(2).replace('.', ',')}/4,00</span>
+                                <span class="px-2 py-0.5 rounded-md ${isLow ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-kristal-royal'} font-extrabold">${pct}%</span>
+                            </div>
+                        </div>
+                        <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full bg-gradient-to-r ${item.color} transition-all duration-500" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // =====================================================================
+        // RENDER CHECKLIST KEBIASAAN HARI INI & INTEGRASI SPREADSHEET
+        // =====================================================================
+        function renderDailyChecklist() {
+            const container = document.getElementById('daily-checklist-container');
+            container.innerHTML = kaihData.map(item => {
+                const checked = !!dailyCheckedState[item.id];
+                return `
+                    <label onclick="toggleDailyHabit('${item.id}')" class="flex items-center justify-between p-3 rounded-2xl border transition cursor-pointer select-none ${checked ? 'bg-emerald-500/20 border-emerald-400/50 text-white' : 'bg-white/5 border-white/15 text-sky-100 hover:bg-white/10'}">
+                        <div class="flex items-center gap-3">
+                            <div class="w-6 h-6 rounded-lg flex items-center justify-center border-2 transition ${checked ? 'bg-emerald-400 border-emerald-400 text-slate-950' : 'border-sky-300/60 bg-transparent'}">
+                                ${checked ? '<i data-lucide="check" class="w-4 h-4 stroke-[3]"></i>' : ''}
+                            </div>
+                            <span class="font-bold text-sm">${item.title}</span>
+                        </div>
+                        <span class="text-[11px] font-semibold ${checked ? 'text-emerald-300' : 'text-sky-300/70'}">
+                            ${checked ? 'Terlaksana' : 'Belum'}
+                        </span>
+                    </label>
+                `;
+            }).join('');
+
+            const checkedCount = Object.values(dailyCheckedState).filter(Boolean).length;
+            const pct = Math.round((checkedCount / 7) * 100);
+            document.getElementById('daily-score-badge').textContent = `${checkedCount}/7 Selesai`;
+            document.getElementById('daily-percent-text').textContent = `${pct}%`;
+            document.getElementById('daily-progress-bar').style.width = `${pct}%`;
+            document.getElementById('direct-spreadsheet-anchor').href = spreadsheetUrl;
+            lucide.createIcons();
+        }
+
+        function toggleDailyHabit(id) {
+            dailyCheckedState[id] = !dailyCheckedState[id];
+            localStorage.setItem('kristal_daily_7kaih', JSON.stringify(dailyCheckedState));
+            renderDailyChecklist();
+        }
+
+        function exportDailyChecklistCSV() {
+            const today = new Date().toISOString().slice(0, 10);
+            const checkedCount = Object.values(dailyCheckedState).filter(Boolean).length;
+            const headers = ['Tanggal', ...kaihData.map(k => k.title), 'Total Terlaksana', 'Persentase'];
+            const values = [
+                today,
+                ...kaihData.map(k => (dailyCheckedState[k.id] ? 'Ya (1)' : 'Belum (0)')),
+                `${checkedCount}/7`,
+                `${Math.round((checkedCount / 7) * 100)}%`
+            ];
+
+            const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), values.join(',')].join('\n');
+            const link = document.createElement('a');
+            link.setAttribute('href', encodeURI(csvContent));
+            link.setAttribute('download', `Jurnal_Harian_7KAIH_${today}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // =====================================================================
+        // RENDER 7 KARTU CANVAS RENCANA PERBAIKAN INTERAKTIF
+        // =====================================================================
+        function renderActionPlanCards() {
+            const grid = document.getElementById('action-plan-cards-grid');
+            grid.innerHTML = actionPlans.map((plan, idx) => `
+                <div onclick="openActionPlanModal('${plan.id}')" class="bg-white rounded-3xl p-6 border ${idx === 0 ? 'border-indigo-300 ring-2 ring-indigo-500/15 lg:col-span-2' : 'border-slate-200/90'} shadow-sm kristal-card-hover cursor-pointer flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-start justify-between gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl ${plan.iconBg} flex items-center justify-center shrink-0 shadow-md">
+                                <i data-lucide="${plan.icon}" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full border ${plan.badgeColor}">
+                                ${plan.badge}
+                            </span>
+                        </div>
+
+                        <h3 class="font-display font-extrabold text-xl text-slate-900 group-hover:text-kristal-royal transition mb-2">
+                            ${plan.title}
+                        </h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            ${plan.summary}
+                        </p>
+
+                        ${idx === 0 ? `
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4 bg-indigo-50/70 p-3.5 rounded-2xl border border-indigo-100 text-xs text-indigo-950 font-semibold">
+                                <div class="flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4 text-indigo-600 shrink-0"></i><span>Eksperimen Sains, Coding & Proyek STEM</span></div>
+                                <div class="flex items-center gap-2"><i data-lucide="users" class="w-4 h-4 text-indigo-600 shrink-0"></i><span>Diskusi Kelompok & Tutor Sebaya</span></div>
+                                <div class="flex items-center gap-2"><i data-lucide="check-square" class="w-4 h-4 text-indigo-600 shrink-0"></i><span>Tugas Mandiri & Belajar ≥30 Menit/Hari</span></div>
+                                <div class="flex items-center gap-2"><i data-lucide="book-open" class="w-4 h-4 text-indigo-600 shrink-0"></i><span>Keterampilan Baru & Literasi 15 Menit</span></div>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                        <div class="text-xs">
+                            <span class="text-slate-400">Target Grafik: </span>
+                            <strong class="text-slate-700">${plan.currentScore}</strong>
+                            <span class="text-emerald-600 font-extrabold"> → ${plan.targetScore}</span>
+                        </div>
+                        <span class="inline-flex items-center gap-1 text-xs font-extrabold text-kristal-blue group-hover:translate-x-1 transition-transform">
+                            <span>Buka Rencana</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // =====================================================================
+        // RENDER DOKUMENTASI PENERAPAN 7 KAIH (FILTERABLE + BUKTI UNGGAHAN)
+        // =====================================================================
+        function getAllDocumentationItems() {
+            return [...customDocumentationItems, ...defaultDocumentationItems];
+        }
+
+        function updateDocStatCounter() {
+            const statEl = document.getElementById('stat-doc-count');
+            if (statEl) {
+                const total = 140 + customDocumentationItems.length;
+                statEl.textContent = customDocumentationItems.length > 0 ? `${total}` : '140+';
+            }
+        }
+
+        function renderDocumentation() {
+            const allDocs = getAllDocumentationItems();
+            updateDocStatCounter();
+
+            const tabContainer = document.getElementById('doc-filter-tabs');
+            const tabs = [
+                { id: 'all', label: `Semua Dokumentasi (${allDocs.length})` },
+                ...kaihData.map(k => {
+                    const count = allDocs.filter(d => d.category === k.id).length;
+                    return { id: k.id, label: `${k.number}. ${k.title} (${count})` };
+                })
+            ];
+
+            tabContainer.innerHTML = tabs.map(t => `
+                <button onclick="filterDocumentation('${t.id}')" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer ${activeDocFilter === t.id ? 'bg-kristal-royal text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-sky-50 hover:text-kristal-blue'}">
+                    ${t.label}
+                </button>
+            `).join('');
+
+            const grid = document.getElementById('documentation-grid');
+            const filtered = activeDocFilter === 'all'
+                ? allDocs
+                : allDocs.filter(d => d.category === activeDocFilter);
+
+            grid.innerHTML = filtered.map(doc => {
+                const hasImage = doc.fileType === 'image' && doc.fileDataUrl;
+                const hasDocFile = doc.fileType === 'doc' && doc.fileName;
+
+                let mediaHeader = '';
+                if (hasImage) {
+                    mediaHeader = `
+                        <div class="h-48 relative overflow-hidden bg-slate-900">
+                            <img src="${doc.fileDataUrl}" alt="${doc.title}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-black/30"></div>
+                            <div class="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+                                <span class="px-3 py-1 rounded-full bg-kristal-royal/90 backdrop-blur-sm text-white text-xs font-bold">
+                                    ${doc.categoryLabel}
+                                </span>
+                                <span class="px-2.5 py-1 rounded-full bg-amber-400 text-slate-950 text-[10px] font-extrabold">
+                                    BUKTI UNGGAHAN
+                                </span>
+                            </div>
+                            <div class="absolute bottom-3 left-3 right-3 text-white">
+                                <p class="text-xs font-semibold flex items-center gap-1 truncate">
+                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-300 shrink-0"></i> ${doc.location}
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    mediaHeader = `
+                        <div class="h-44 bg-gradient-to-br ${doc.gradient} p-5 text-white flex flex-col justify-between relative overflow-hidden">
+                            <div class="flex items-center justify-between relative z-10 gap-2">
+                                <span class="px-3 py-1 rounded-full bg-black/25 backdrop-blur-sm text-xs font-bold">
+                                    ${doc.categoryLabel}
+                                </span>
+                                <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                                    <i data-lucide="${hasDocFile ? 'file-check-2' : doc.icon}" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+                            ${hasDocFile ? `
+                                <div class="bg-white/15 backdrop-blur-sm rounded-xl px-3 py-2 border border-white/25 flex items-center gap-2 text-xs font-bold">
+                                    <i data-lucide="paperclip" class="w-4 h-4 text-amber-300 shrink-0"></i>
+                                    <span class="truncate">${doc.fileName}</span>
+                                </div>
+                            ` : ''}
+                            <div class="relative z-10">
+                                <p class="text-xs font-semibold text-white/90 flex items-center gap-1">
+                                    <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${doc.location}
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="bg-white rounded-3xl overflow-hidden border ${doc.isCustom ? 'border-sky-300 ring-2 ring-sky-500/10' : 'border-slate-200/90'} shadow-sm kristal-card-hover flex flex-col">
+                        ${mediaHeader}
+                        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+                            <div>
+                                <div class="flex items-center justify-between gap-2 text-xs font-bold text-kristal-blue mb-1">
+                                    <span class="flex items-center gap-1.5">
+                                        <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                                        <span>${doc.date}</span>
+                                    </span>
+                                    ${doc.actor ? `<span class="text-slate-500 font-semibold truncate max-w-[160px]">• ${doc.actor}</span>` : ''}
+                                </div>
+                                <h3 class="font-display font-bold text-lg text-slate-900 leading-snug mb-2">
+                                    ${doc.title}
+                                </h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">
+                                    ${doc.desc}
+                                </p>
+                            </div>
+                            <div class="pt-3 border-t border-slate-100 text-xs flex items-center justify-between gap-2">
+                                <button onclick="openDocumentationDetailModal('${doc.id}')" class="inline-flex items-center gap-1 font-bold text-kristal-royal hover:text-kristal-blue cursor-pointer">
+                                    <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                                    <span>Lihat Bukti</span>
+                                </button>
+                                <div class="flex items-center gap-2">
+                                    ${doc.isCustom ? `
+                                        <button onclick="deleteCustomDocumentation('${doc.id}')" class="inline-flex items-center gap-1 text-rose-600 hover:text-rose-700 font-bold cursor-pointer" title="Hapus Bukti">
+                                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                            <span>Hapus</span>
+                                        </button>
+                                    ` : `<span class="text-emerald-600 font-bold text-[11px]">✓ Terverifikasi</span>`}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function filterDocumentation(catId) {
+            activeDocFilter = catId;
+            renderDocumentation();
+        }
+
+        // =====================================================================
+        // LOGIKA PENGUMPULAN & UNGGAH FILE BUKTI DOKUMENTASI
+        // =====================================================================
+        function toggleUploadFormPanel() {
+            const panel = document.getElementById('doc-upload-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        function handleEvidenceDragOver(e) {
+            e.preventDefault();
+            document.getElementById('evidence-dropzone').classList.add('border-kristal-royal', 'bg-sky-100');
+        }
+
+        function handleEvidenceDragLeave(e) {
+            e.preventDefault();
+            document.getElementById('evidence-dropzone').classList.remove('border-kristal-royal', 'bg-sky-100');
+        }
+
+        function handleEvidenceDrop(e) {
+            e.preventDefault();
+            document.getElementById('evidence-dropzone').classList.remove('border-kristal-royal', 'bg-sky-100');
+            const file = e.dataTransfer.files[0];
+            if (file) processEvidenceFile(file);
+        }
+
+        function handleEvidenceFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) processEvidenceFile(file);
+        }
+
+        function processEvidenceFile(file) {
+            const sizeKB = Math.round(file.size / 1024);
+            const sizeText = sizeKB > 1024 ? `${(sizeKB / 1024).toFixed(2)} MB` : `${sizeKB} KB`;
+            const isImage = file.type.startsWith('image/');
+
+            const placeholder = document.getElementById('evidence-upload-placeholder');
+            const previewBox = document.getElementById('evidence-preview-box');
+            const previewImg = document.getElementById('evidence-preview-img');
+            const previewDoc = document.getElementById('evidence-preview-doc');
+            const docFilename = document.getElementById('evidence-doc-filename');
+            const fileMeta = document.getElementById('evidence-file-meta');
+
+            placeholder.classList.add('hidden');
+            previewBox.classList.remove('hidden');
+            fileMeta.textContent = `${file.name} (${sizeText})`;
+
+            if (isImage) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const maxW = 900;
+                        const scale = img.width > maxW ? maxW / img.width : 1;
+                        canvas.width = img.width * scale;
+                        canvas.height = img.height * scale;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        const compressedUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+                        selectedEvidenceFile = {
+                            type: 'image',
+                            name: file.name,
+                            sizeText: sizeText,
+                            dataUrl: compressedUrl
+                        };
+                        previewImg.src = compressedUrl;
+                        previewImg.classList.remove('hidden');
+                        previewDoc.classList.add('hidden');
+                    };
+                    img.src = ev.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                selectedEvidenceFile = {
+                    type: 'doc',
+                    name: file.name,
+                    sizeText: sizeText,
+                    dataUrl: ''
+                };
+                docFilename.textContent = file.name;
+                previewDoc.classList.remove('hidden');
+                previewImg.classList.add('hidden');
+            }
+        }
+
+        function resetEvidencePreview() {
+            selectedEvidenceFile = null;
+            document.getElementById('evidence-upload-placeholder').classList.remove('hidden');
+            document.getElementById('evidence-preview-box').classList.add('hidden');
+            document.getElementById('evidence-preview-img').classList.add('hidden');
+            document.getElementById('evidence-preview-doc').classList.add('hidden');
+            const fb = document.getElementById('evidence-form-feedback');
+            fb.classList.add('hidden');
+        }
+
+        function submitDocumentationEvidence(e) {
+            e.preventDefault();
+            const fb = document.getElementById('evidence-form-feedback');
+
+            if (!selectedEvidenceFile) {
+                fb.textContent = '⚠ Silakan pilih atau seret file foto/dokumen bukti terlebih dahulu.';
+                fb.className = 'mt-3 text-xs font-bold px-3.5 py-2.5 rounded-xl bg-amber-100 text-amber-900 border border-amber-300';
+                fb.classList.remove('hidden');
+                return;
+            }
+
+            const catId = document.getElementById('ev-category').value;
+            const rawDate = document.getElementById('ev-date').value;
+            const title = document.getElementById('ev-title').value.trim();
+            const actor = document.getElementById('ev-actor').value.trim();
+            const location = document.getElementById('ev-location').value.trim();
+            const desc = document.getElementById('ev-desc').value.trim();
+
+            const kaihMeta = kaihData.find(k => k.id === catId) || kaihData[4];
+            const formattedDate = rawDate
+                ? new Date(rawDate).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })
+                : new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+
+            const newDoc = {
+                id: 'custom-' + Date.now(),
+                category: catId,
+                categoryLabel: `${kaihMeta.number}. ${kaihMeta.title}`,
+                title: title,
+                actor: actor,
+                date: formattedDate,
+                location: location,
+                desc: desc,
+                gradient: kaihMeta.color,
+                icon: kaihMeta.icon,
+                fileType: selectedEvidenceFile.type,
+                fileName: selectedEvidenceFile.name,
+                fileSize: selectedEvidenceFile.sizeText,
+                fileDataUrl: selectedEvidenceFile.dataUrl,
+                isCustom: true
+            };
+
+            try {
+                customDocumentationItems.unshift(newDoc);
+                localStorage.setItem('kristal_custom_docs_7kaih', JSON.stringify(customDocumentationItems));
+                activeDocFilter = 'all';
+                renderDocumentation();
+
+                document.getElementById('evidence-upload-form').reset();
+                resetEvidencePreview();
+
+                fb.textContent = '✓ Bukti dokumentasi berhasil disimpan dan langsung ditampilkan di galeri!';
+                fb.className = 'mt-3 text-xs font-bold px-3.5 py-2.5 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-300';
+                fb.classList.remove('hidden');
+            } catch (err) {
+                customDocumentationItems.shift();
+                fb.textContent = '⚠ Ukuran file terlalu besar untuk penyimpanan browser. Gunakan foto di bawah 2 MB.';
+                fb.className = 'mt-3 text-xs font-bold px-3.5 py-2.5 rounded-xl bg-rose-100 text-rose-900 border border-rose-300';
+                fb.classList.remove('hidden');
+            }
+        }
+
+        function deleteCustomDocumentation(docId) {
+            customDocumentationItems = customDocumentationItems.filter(d => d.id !== docId);
+            localStorage.setItem('kristal_custom_docs_7kaih', JSON.stringify(customDocumentationItems));
+            renderDocumentation();
+        }
+
+        function openDocumentationDetailModal(docId) {
+            const doc = getAllDocumentationItems().find(d => d.id === docId);
+            if (!doc) return;
+
+            openModal(`
+                <div class="flex items-start justify-between gap-4 mb-4">
+                    <div>
+                        <span class="px-3 py-1 rounded-full bg-sky-100 text-kristal-royal text-xs font-extrabold">${doc.categoryLabel}</span>
+                        <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 mt-2">${doc.title}</h3>
+                    </div>
+                    <button onclick="closeModal()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 cursor-pointer">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                ${doc.fileType === 'image' && doc.fileDataUrl ? `
+                    <div class="rounded-2xl overflow-hidden border border-slate-200 bg-slate-950 mb-4">
+                        <img src="${doc.fileDataUrl}" alt="${doc.title}" class="w-full max-h-[380px] object-contain mx-auto">
+                    </div>
+                ` : `
+                    <div class="rounded-2xl p-6 bg-gradient-to-br ${doc.gradient} text-white mb-4 flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
+                            <i data-lucide="${doc.fileName ? 'file-check-2' : doc.icon}" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-base">${doc.fileName || 'Dokumentasi Kegiatan Terverifikasi'}</p>
+                            <p class="text-xs text-white/85">${doc.fileSize ? `Ukuran file: ${doc.fileSize}` : 'Arsip Resmi TIM KRISTAL SMA Negeri 3 Lebong'}</p>
+                        </div>
+                    </div>
+                `}
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200 mb-4">
+                    <div>
+                        <span class="text-slate-400 block">Tanggal Kegiatan</span>
+                        <strong class="text-slate-800">${doc.date}</strong>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 block">Pelaksana</span>
+                        <strong class="text-slate-800">${doc.actor || 'TIM KRISTAL SMAN 3 Lebong'}</strong>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 block">Tempat / Lokasi</span>
+                        <strong class="text-slate-800">${doc.location}</strong>
+                    </div>
+                </div>
+
+                <p class="text-sm text-slate-700 leading-relaxed mb-5">${doc.desc}</p>
+
+                <div class="flex justify-end">
+                    <button onclick="closeModal()" class="px-5 py-2.5 rounded-xl bg-kristal-royal text-white font-bold text-sm cursor-pointer">Tutup</button>
+                </div>
+            `);
+        }
+
+        function exportDocumentationCSV() {
+            const allDocs = getAllDocumentationItems();
+            const header = ['Kategori 7 KAIH', 'Nama Kegiatan', 'Pelaksana', 'Tanggal', 'Tempat', 'Keterangan', 'Nama File Bukti'];
+            const rows = allDocs.map(d => [
+                `"${d.categoryLabel}"`,
+                `"${d.title.replace(/"/g, '""')}"`,
+                `"${(d.actor || 'TIM KRISTAL').replace(/"/g, '""')}"`,
+                `"${d.date}"`,
+                `"${d.location.replace(/"/g, '""')}"`,
+                `"${d.desc.replace(/"/g, '""')}"`,
+                `"${d.fileName || 'Arsip Foto Sekolah'}"`
+            ].join(','));
+
+            const csvContent = 'data:text/csv;charset=utf-8,' + [header.join(','), ...rows].join('\n');
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', 'Rekap_Bukti_Dokumentasi_7KAIH_SMAN3Lebong.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // =====================================================================
+        // CHART.JS: DIAGRAM BATANG TREN GELOMBANG P1 VS P4
+        // =====================================================================
+        function initTrendChart() {
+            const ctx = document.getElementById('kaihTrendChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: kaihData.map(k => k.title),
+                    datasets: [
+                        {
+                            label: 'Gelombang P1 (Awal)',
+                            data: kaihData.map(k => k.p1),
+                            backgroundColor: '#94A3B8',
+                            borderRadius: 6,
+                        },
+                        {
+                            label: 'Gelombang P4 (Terkini)',
+                            data: kaihData.map(k => k.p4),
+                            backgroundColor: '#0284C7',
+                            borderRadius: 6,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: { family: 'Inter', weight: '600', size: 12 },
+                                usePointStyle: true
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 2.0,
+                            max: 4.0,
+                            grid: { color: '#E2E8F0' },
+                            ticks: { font: { family: 'Inter', size: 11 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { family: 'Inter', weight: '600', size: 11 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // =====================================================================
+        // MODAL INTERAKTIF (DETAIL 7 KAIH, CANVAS PERBAIKAN, & SPREADSHEET)
+        // =====================================================================
+        function openModal(htmlContent) {
+            const modal = document.getElementById('detail-modal');
+            document.getElementById('modal-content').innerHTML = htmlContent;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detail-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        document.getElementById('detail-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        function openKaihDetailModal(id) {
+            const item = kaihData.find(k => k.id === id);
+            if (!item) return;
+            const pct = Math.round((item.score / 4.0) * 100);
+
+            openModal(`
+                <div class="flex items-start justify-between gap-4 mb-5">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} text-white flex items-center justify-center shadow-lg">
+                            <i data-lucide="${item.icon}" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${item.badgeBg}">Kebiasaan #${item.number}</span>
+                            <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-1">${item.title}</h3>
+                        </div>
+                    </div>
+                    <button onclick="closeModal()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 cursor-pointer">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <p class="text-slate-700 text-base leading-relaxed mb-5">${item.shortDesc}</p>
+
+                <div class="grid grid-cols-3 gap-3 mb-5">
+                    <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-center">
+                        <p class="text-xs text-slate-500">Skor P1 → P4</p>
+                        <p class="font-display font-extrabold text-lg text-slate-900">${item.p1.toFixed(2).replace('.', ',')} → ${item.p4.toFixed(2).replace('.', ',')}</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3.5 rounded-2xl border border-emerald-200 text-center">
+                        <p class="text-xs text-emerald-700">Pertumbuhan</p>
+                        <p class="font-display font-extrabold text-lg text-emerald-700">${item.growth}</p>
+                    </div>
+                    <div class="bg-sky-50 p-3.5 rounded-2xl border border-sky-200 text-center">
+                        <p class="text-xs text-kristal-blue">Capaian</p>
+                        <p class="font-display font-extrabold text-lg text-kristal-royal">${pct}%</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 mb-6">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+                        <h4 class="font-bold text-sm text-slate-900 mb-2">Contoh Kegiatan Harian:</h4>
+                        <ul class="space-y-1.5 text-sm text-slate-700">
+                            ${item.examples.map(ex => `<li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i><span>${ex}</span></li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200">
+                        <h4 class="font-bold text-sm text-amber-900 mb-1">Indikator & Temuan Empiris SMAN 3 Lebong:</h4>
+                        <p class="text-sm text-amber-800">${item.indicator}. ${item.empiricalNote}</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-100">
+                    <div class="flex flex-wrap gap-1.5">
+                        ${item.characterValues.map(val => `<span class="px-2.5 py-1 rounded-lg bg-sky-100 text-kristal-royal text-xs font-bold">${val}</span>`).join('')}
+                    </div>
+                    <button onclick="closeModal()" class="px-5 py-2.5 rounded-xl bg-kristal-royal text-white font-bold text-sm hover:bg-blue-900 cursor-pointer">Tutup</button>
+                </div>
+            `);
+        }
+
+        function openActionPlanModal(planId) {
+            const plan = actionPlans.find(p => p.id === planId);
+            if (!plan) return;
+
+            openModal(`
+                <div class="flex items-start justify-between gap-4 mb-4">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-13 h-13 p-3 rounded-2xl ${plan.iconBg} shadow-md">
+                            <i data-lucide="${plan.icon}" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <span class="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${plan.badgeColor}">${plan.badge}</span>
+                            <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 mt-1">${plan.title}</h3>
+                        </div>
+                    </div>
+                    <button onclick="closeModal()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 cursor-pointer">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="bg-slate-50 px-4 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-600 mb-4 flex items-center gap-2">
+                    <i data-lucide="user-cog" class="w-4 h-4 text-kristal-royal shrink-0"></i>
+                    <span><strong>Penanggung Jawab:</strong> ${plan.owner}</span>
+                </div>
+
+                <div class="flex items-center justify-between bg-kristal-navy text-white p-4 rounded-2xl mb-5">
+                    <div>
+                        <p class="text-xs text-sky-300">Baseline Saat Ini</p>
+                        <p class="font-display font-extrabold text-lg">${plan.currentScore}</p>
+                    </div>
+                    <i data-lucide="arrow-right-circle" class="w-6 h-6 text-amber-400"></i>
+                    <div class="text-right">
+                        <p class="text-xs text-emerald-300">Target Akselerasi Grafik</p>
+                        <p class="font-display font-extrabold text-lg text-amber-300">${plan.targetScore}</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 mb-6">
+                    <div>
+                        <h4 class="font-display font-bold text-base text-slate-900 mb-2 flex items-center gap-2">
+                            <i data-lucide="list-checks" class="w-5 h-5 text-kristal-blue"></i> Langkah Aksi Konkret di Sekolah & Rumah:
+                        </h4>
+                        <ul class="space-y-2 text-sm text-slate-700 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                            ${plan.actions.map(act => `<li class="flex items-start gap-2.5"><span class="w-2 h-2 rounded-full bg-kristal-royal mt-1.5 shrink-0"></span><span>${act}</span></li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="font-display font-bold text-base text-slate-900 mb-2 flex items-center gap-2">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-amber-500"></i> Dampak Perubahan Terukur:
+                        </h4>
+                        <ul class="space-y-2 text-sm text-emerald-950 bg-emerald-50 p-4 rounded-2xl border border-emerald-200">
+                            ${plan.impacts.map(imp => `<li class="flex items-start gap-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0"></i><span>${imp}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <button onclick="closeModal()" class="px-5 py-2.5 rounded-xl bg-kristal-royal hover:bg-blue-900 text-white font-bold text-sm cursor-pointer">Siap Diterapkan</button>
+                </div>
+            `);
+        }
+
+        // =====================================================================
+        // MODAL & LINK LANGSUNG KE GOOGLE SPREADSHEET JURNAL HARIAN
+        // =====================================================================
+        function openSpreadsheetModal() {
+            const checkedCount = Object.values(dailyCheckedState).filter(Boolean).length;
+            openModal(`
+                <div class="flex items-start justify-between gap-4 mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow">
+                            <i data-lucide="file-spreadsheet" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-700">Integrasi Pencatatan Siswa & Guru</span>
+                            <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">Jurnal Harian 7 KAIH (Spreadsheet)</h3>
+                        </div>
+                    </div>
+                    <button onclick="closeModal()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 cursor-pointer">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                    Catat pelaksanaan <strong>7 Kebiasaan Anak Indonesia Hebat</strong> setiap hari langsung pada Google Spreadsheet Jurnal Siswa SMA Negeri 3 Lebong atau unduh baris jurnal dalam format <strong>.CSV</strong>.
+                </p>
+
+                <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 mb-4">
+                    <div class="flex items-center justify-between text-sm font-bold text-emerald-900 mb-1">
+                        <span>Status Checklist Hari Ini:</span>
+                        <span>${checkedCount} / 7 Kebiasaan Terlaksana (${Math.round((checkedCount/7)*100)}%)</span>
+                    </div>
+                    <p class="text-xs text-emerald-700">Data ringkasan harian siap disalin atau diekspor langsung ke lembar kerja Spreadsheet.</p>
+                </div>
+
+                <div class="space-y-2 mb-5">
+                    <label class="block text-xs font-bold text-slate-700 uppercase">Tautan Google Spreadsheet Kelas / Sekolah:</label>
+                    <div class="flex gap-2">
+                        <input id="spreadsheet-url-input" type="url" value="${spreadsheetUrl}" placeholder="https://docs.google.com/spreadsheets/d/..." class="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-kristal-blue">
+                        <button onclick="saveCustomSpreadsheetUrl()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs cursor-pointer">Simpan Link</button>
+                    </div>
+                    <p id="url-saved-msg" class="hidden text-xs font-semibold text-emerald-600">✓ Tautan Spreadsheet berhasil diperbarui!</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a id="direct-spreadsheet-link" href="${spreadsheetUrl}" target="_blank" rel="noopener noreferrer" class="flex-1 py-3.5 px-5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm text-center flex items-center justify-center gap-2 shadow-lg transition">
+                        <span>Buka Google Spreadsheet Sekarang</span>
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </a>
+                    <button onclick="exportDailyChecklistCSV()" class="py-3.5 px-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-2 cursor-pointer">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Unduh CSV</span>
+                    </button>
+                    <button onclick="copyDailySummaryText()" class="py-3.5 px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm flex items-center justify-center gap-2 cursor-pointer">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                        <span id="copy-btn-label">Salin Rekap</span>
+                    </button>
+                </div>
+            `);
+        }
+
+        function saveCustomSpreadsheetUrl() {
+            const input = document.getElementById('spreadsheet-url-input');
+            const val = input.value.trim();
+            if (val) {
+                spreadsheetUrl = val;
+                localStorage.setItem('kristal_spreadsheet_url', spreadsheetUrl);
+                document.getElementById('direct-spreadsheet-link').href = spreadsheetUrl;
+                document.getElementById('direct-spreadsheet-anchor').href = spreadsheetUrl;
+                const msg = document.getElementById('url-saved-msg');
+                msg.classList.remove('hidden');
+            }
+        }
+
+        function copyDailySummaryText() {
+            const today = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const lines = kaihData.map(k => `${dailyCheckedState[k.id] ? '[✓]' : '[ ]'} ${k.title}`).join('\n');
+            const textToCopy = `JURNAL HARIAN 7 KAIH - SMAN 3 LEBONG\nTanggal: ${today}\n${lines}`;
+
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const label = document.getElementById('copy-btn-label');
+            if (label) label.textContent = 'Tersalin!';
+        }
+
+        // =====================================================================
+        // POSTER RESMI TIM KRISTAL (STATIS UTUH + DRAG & DROP + LOCALSTORAGE)
+        // =====================================================================
+        function initOfficialPoster() {
+            const savedPoster = localStorage.getItem('kristal_official_poster_dataurl');
+            const imgEl = document.getElementById('kristal-poster-img');
+            const placeholderEl = document.getElementById('poster-placeholder-overlay');
+            const resetBtn = document.getElementById('reset-poster-btn');
+
+            if (savedPoster) {
+                imgEl.src = savedPoster;
+                imgEl.classList.remove('hidden');
+                placeholderEl.classList.add('hidden');
+                if (resetBtn) resetBtn.classList.remove('hidden');
+            }
+        }
+
+        function applyPosterFile(file) {
+            if (!file || !file.type.startsWith('image/')) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const dataUrl = e.target.result;
+                const imgEl = document.getElementById('kristal-poster-img');
+                const placeholderEl = document.getElementById('poster-placeholder-overlay');
+                const resetBtn = document.getElementById('reset-poster-btn');
+
+                imgEl.src = dataUrl;
+                imgEl.classList.remove('hidden');
+                placeholderEl.classList.add('hidden');
+                if (resetBtn) resetBtn.classList.remove('hidden');
+
+                try {
+                    localStorage.setItem('kristal_official_poster_dataurl', dataUrl);
+                } catch (err) {
+                    // Tetap tampil di sesi aktif meski melebihi kuota localStorage
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handlePosterUpload(event) {
+            const file = event.target.files[0];
+            applyPosterFile(file);
+        }
+
+        function handlePosterDragOver(e) {
+            e.preventDefault();
+            document.getElementById('poster-dropzone').classList.add('ring-4', 'ring-amber-400');
+        }
+
+        function handlePosterDragLeave(e) {
+            e.preventDefault();
+            document.getElementById('poster-dropzone').classList.remove('ring-4', 'ring-amber-400');
+        }
+
+        function handlePosterDrop(e) {
+            e.preventDefault();
+            document.getElementById('poster-dropzone').classList.remove('ring-4', 'ring-amber-400');
+            const file = e.dataTransfer.files[0];
+            applyPosterFile(file);
+        }
+
+        function resetPosterStorage() {
+            localStorage.removeItem('kristal_official_poster_dataurl');
+            const imgEl = document.getElementById('kristal-poster-img');
+            const placeholderEl = document.getElementById('poster-placeholder-overlay');
+            const resetBtn = document.getElementById('reset-poster-btn');
+            imgEl.classList.add('hidden');
+            placeholderEl.classList.remove('hidden');
+            if (resetBtn) resetBtn.classList.add('hidden');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Inisialisasi saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            initOfficialPoster();
+            const evDateInput = document.getElementById('ev-date');
+            if (evDateInput) evDateInput.valueAsDate = new Date();
+            renderKaihCards();
+            renderProgressBars();
+            renderDailyChecklist();
+            renderActionPlanCards();
+            renderDocumentation();
+            initTrendChart();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
